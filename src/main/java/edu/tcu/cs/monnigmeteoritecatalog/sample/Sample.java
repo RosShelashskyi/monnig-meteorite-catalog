@@ -47,19 +47,19 @@ public class Sample implements Serializable {
     }
 
     public String getSampleId() {
-        return sampleId;
+        return sample_ID;
     }
 
     public void setSampleId(String sampleId) {
-        this.sampleId = sampleId;
+        this.sample_ID = sampleId;
     }
 
     public String getMonnigNumber() {
-        return monnigNumber;
+        return monnig_number;
     }
 
     public void setMonnigNumber(String monnigNumber) {
-        this.monnigNumber = monnigNumber;
+        this.monnig_number = monnigNumber;
     }
 
     public boolean isIs_type_specimen() {
