@@ -15,7 +15,7 @@ public class Sample implements Serializable {
     @Id
     private String sample_ID;
     private String monnig_number;
-    private boolean is_type_specimen;
+    private boolean is_repository;
     private boolean is_educational;
     private float sample_weight_g;
     private String sample_format;
@@ -23,6 +23,7 @@ public class Sample implements Serializable {
     private String name;
     private String country;
     private String location;
+    private String found_info;
 
     //maybe date can be like an object containing all these fields?
     //I'll leave it like this for now, but something to consider
@@ -39,6 +40,7 @@ public class Sample implements Serializable {
     private String type;
     private float total_known_weight_num;
     private String total_know_weight_units;
+    private String additional_class_info;
 
     @ManyToOne
     private SampleHistory history;
@@ -54,20 +56,20 @@ public class Sample implements Serializable {
         this.sample_ID = sampleId;
     }
 
-    public String getMonnigNumber() {
+    public String getMonnig_number() {
         return monnig_number;
     }
 
-    public void setMonnigNumber(String monnigNumber) {
-        this.monnig_number = monnigNumber;
+    public void setMonnig_number(String monnig_number) {
+        this.monnig_number = monnig_number;
     }
 
-    public boolean isIs_type_specimen() {
-        return is_type_specimen;
+    public boolean isIs_repository() {
+        return is_repository;
     }
 
-    public void setIs_type_specimen(boolean is_type_specimen) {
-        this.is_type_specimen = is_type_specimen;
+    public void setIs_repository(boolean is_repository) {
+        this.is_repository = is_repository;
     }
 
     public boolean isIs_educational() {
@@ -124,6 +126,14 @@ public class Sample implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getFound_info() {
+        return found_info;
+    }
+
+    public void setFound_info(String found_info) {
+        this.found_info = found_info;
     }
 
     public String getDate_found_year() {
@@ -212,5 +222,13 @@ public class Sample implements Serializable {
 
     public void setTotal_know_weight_units(String total_know_weight_units) {
         this.total_know_weight_units = total_know_weight_units;
+    }
+
+    public String getAdditional_class_info() {
+        return additional_class_info;
+    }
+
+    public void setAdditional_class_info(String additional_class_info) {
+        this.additional_class_info = additional_class_info;
     }
 }
