@@ -1,11 +1,14 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleHistory;
 import jakarta.persistence.ManyToOne;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 //class for representing meteorite samples
 @Entity
@@ -14,32 +17,28 @@ public class Sample implements Serializable {
     //primary key
     @Id
     private String sample_ID;
-    private String monnig_number;
-    private boolean is_repository;
-    private boolean is_educational;
-    private float sample_weight_g;
-    private String sample_format;
-    private String sample_format_notes;
     private String name;
+    private String monnig_number;
+    private String sample_class;
+    private String group;
+    private String clan;
     private String country;
     private String location;
     private String found_info;
-
-    //maybe date can be like an object containing all these fields?
-    //I'll leave it like this for now, but something to consider
+    private String type;
+    private float total_known_weight_num;
+    private String total_know_weight_units;
+    private float sample_weight_g;
     private String date_found_year;
     private String date_found_month;
     private String date_found_day;
     private String date_found_hour;
-    private boolean observed_fall;
-
-    //the original variable name is class, but that a reserved work lol
-    private String sample_class;
-    private String clan;
-    private String group;
-    private String type;
-    private float total_known_weight_num;
-    private String total_know_weight_units;
+    private boolean is_educational;
+    private boolean is_repository;
+    private String sample_format;
+    private String external_resources;
+    @ElementCollection
+    private List<File> images;
     private String additional_class_info;
 
     @ManyToOne
@@ -48,12 +47,20 @@ public class Sample implements Serializable {
     public Sample() {
     }
 
-    public String getSampleId() {
+    public String getSample_ID() {
         return sample_ID;
     }
 
-    public void setSampleId(String sampleId) {
-        this.sample_ID = sampleId;
+    public void setSample_ID(String sample_ID) {
+        this.sample_ID = sample_ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMonnig_number() {
@@ -64,52 +71,28 @@ public class Sample implements Serializable {
         this.monnig_number = monnig_number;
     }
 
-    public boolean isIs_repository() {
-        return is_repository;
+    public String getSample_class() {
+        return sample_class;
     }
 
-    public void setIs_repository(boolean is_repository) {
-        this.is_repository = is_repository;
+    public void setSample_class(String sample_class) {
+        this.sample_class = sample_class;
     }
 
-    public boolean isIs_educational() {
-        return is_educational;
+    public String getGroup() {
+        return group;
     }
 
-    public void setIs_educational(boolean is_educational) {
-        this.is_educational = is_educational;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public float getSample_weight_g() {
-        return sample_weight_g;
+    public String getClan() {
+        return clan;
     }
 
-    public void setSample_weight_g(float sample_weight_g) {
-        this.sample_weight_g = sample_weight_g;
-    }
-
-    public String getSample_format() {
-        return sample_format;
-    }
-
-    public void setSample_format(String sample_format) {
-        this.sample_format = sample_format;
-    }
-
-    public String getSample_format_notes() {
-        return sample_format_notes;
-    }
-
-    public void setSample_format_notes(String sample_format_notes) {
-        this.sample_format_notes = sample_format_notes;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setClan(String clan) {
+        this.clan = clan;
     }
 
     public String getCountry() {
@@ -134,6 +117,38 @@ public class Sample implements Serializable {
 
     public void setFound_info(String found_info) {
         this.found_info = found_info;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public float getTotal_known_weight_num() {
+        return total_known_weight_num;
+    }
+
+    public void setTotal_known_weight_num(float total_known_weight_num) {
+        this.total_known_weight_num = total_known_weight_num;
+    }
+
+    public String getTotal_know_weight_units() {
+        return total_know_weight_units;
+    }
+
+    public void setTotal_know_weight_units(String total_know_weight_units) {
+        this.total_know_weight_units = total_know_weight_units;
+    }
+
+    public float getSample_weight_g() {
+        return sample_weight_g;
+    }
+
+    public void setSample_weight_g(float sample_weight_g) {
+        this.sample_weight_g = sample_weight_g;
     }
 
     public String getDate_found_year() {
@@ -168,60 +183,44 @@ public class Sample implements Serializable {
         this.date_found_hour = date_found_hour;
     }
 
-    public boolean isObserved_fall() {
-        return observed_fall;
+    public boolean isIs_educational() {
+        return is_educational;
     }
 
-    public void setObserved_fall(boolean observed_fall) {
-        this.observed_fall = observed_fall;
+    public void setIs_educational(boolean is_educational) {
+        this.is_educational = is_educational;
     }
 
-    public String getSample_class() {
-        return sample_class;
+    public boolean isIs_repository() {
+        return is_repository;
     }
 
-    public void setSample_class(String sample_class) {
-        this.sample_class = sample_class;
+    public void setIs_repository(boolean is_repository) {
+        this.is_repository = is_repository;
     }
 
-    public String getClan() {
-        return clan;
+    public String getSample_format() {
+        return sample_format;
     }
 
-    public void setClan(String clan) {
-        this.clan = clan;
+    public void setSample_format(String sample_format) {
+        this.sample_format = sample_format;
     }
 
-    public String getGroup() {
-        return group;
+    public String getExternal_resources() {
+        return external_resources;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setExternal_resources(String external_resources) {
+        this.external_resources = external_resources;
     }
 
-    public String getType() {
-        return type;
+    public List<File> getImages() {
+        return images;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public float getTotal_known_weight_num() {
-        return total_known_weight_num;
-    }
-
-    public void setTotal_known_weight_num(float total_known_weight_num) {
-        this.total_known_weight_num = total_known_weight_num;
-    }
-
-    public String getTotal_know_weight_units() {
-        return total_know_weight_units;
-    }
-
-    public void setTotal_know_weight_units(String total_know_weight_units) {
-        this.total_know_weight_units = total_know_weight_units;
+    public void setImages(List<File> images) {
+        this.images = images;
     }
 
     public String getAdditional_class_info() {
@@ -230,5 +229,13 @@ public class Sample implements Serializable {
 
     public void setAdditional_class_info(String additional_class_info) {
         this.additional_class_info = additional_class_info;
+    }
+
+    public SampleHistory getHistory() {
+        return history;
+    }
+
+    public void setHistory(SampleHistory history) {
+        this.history = history;
     }
 }
