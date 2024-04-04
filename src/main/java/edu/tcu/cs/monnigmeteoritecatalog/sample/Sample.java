@@ -3,7 +3,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.sample;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleHistory;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.SampleHistory;
 import jakarta.persistence.ManyToOne;
 
 import java.io.File;

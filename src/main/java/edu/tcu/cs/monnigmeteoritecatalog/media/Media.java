@@ -1,4 +1,4 @@
-package edu.tcu.cs.monnigmeteoritecatalog.sample;
+package edu.tcu.cs.monnigmeteoritecatalog.media;
 // Maybe remove this not sure the purpose of it
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

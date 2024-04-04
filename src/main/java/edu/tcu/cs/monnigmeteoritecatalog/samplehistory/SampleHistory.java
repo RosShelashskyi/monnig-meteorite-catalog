@@ -1,8 +1,7 @@
-package edu.tcu.cs.monnigmeteoritecatalog.sample;
+package edu.tcu.cs.monnigmeteoritecatalog.samplehistory;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 import java.security.Timestamp;

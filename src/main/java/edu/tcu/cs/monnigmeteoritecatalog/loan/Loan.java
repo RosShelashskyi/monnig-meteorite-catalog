@@ -1,4 +1,4 @@
-package edu.tcu.cs.monnigmeteoritecatalog.sample;
+package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
