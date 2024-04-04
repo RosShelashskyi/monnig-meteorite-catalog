@@ -228,11 +228,11 @@ public class Sample implements Serializable {
         this.additional_class_info = additional_class_info;
     }
 
-    public SampleHistory getHistory() {
+    public List<SampleHistory> getHistory() {
         return history;
     }
 
-    public void setHistory(SampleHistory history) {
+    public void setHistory(List<SampleHistory> history) {
         this.history = history;
     }
 }
