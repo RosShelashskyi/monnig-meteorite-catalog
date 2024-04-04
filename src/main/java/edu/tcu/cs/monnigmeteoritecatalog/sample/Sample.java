@@ -1,10 +1,7 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.SampleHistory;
-import jakarta.persistence.ManyToOne;
 
 import java.io.File;
 import java.io.Serializable;
@@ -41,8 +38,8 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
-    @ManyToOne
-    private SampleHistory history;
+    @OneToMany
+    private List<SampleHistory> history;
 
     public Sample() {
     }
