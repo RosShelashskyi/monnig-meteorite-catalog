@@ -1,5 +1,8 @@
 package edu.tcu.cs.monnigmeteoritecatalog.utils;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,6 +11,7 @@ import java.net.NetworkInterface;
  * This piece of code is from the Internet. The quality is unknown.
  * Only for demoing purpose. Use with caution!
  */
+@Component
 public class IdWorker {
 
     private final static long twepoch = 1288834974657L;
