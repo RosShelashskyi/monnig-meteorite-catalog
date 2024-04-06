@@ -38,8 +38,8 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
-    @OneToMany
-    private List<SampleHistory> history;
+//    @OneToMany
+//    private List<SampleHistory> history;
 
     public Sample() {
     }
@@ -228,11 +228,11 @@ public class Sample implements Serializable {
         this.additional_class_info = additional_class_info;
     }
 
-    public List<SampleHistory> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<SampleHistory> history) {
-        this.history = history;
-    }
+//    public List<SampleHistory> getHistory() {
+//        return history;
+//    }
+//
+//    public void setHistory(List<SampleHistory> history) {
+//        this.history = history;
+//    }
 }
