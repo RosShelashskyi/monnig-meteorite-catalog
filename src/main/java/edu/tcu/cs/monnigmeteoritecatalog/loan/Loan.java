@@ -13,7 +13,7 @@ import java.util.List;
 public class Loan implements Serializable {
 
     @Id
-    private int loan_ID;
+    private String loan_ID;
 
     @OneToMany
     private List<Sample> samples_on_loan;
@@ -30,11 +30,11 @@ public class Loan implements Serializable {
 
     }
 
-    public int getLoan_ID() {
+    public String getLoan_ID() {
         return loan_ID;
     }
 
-    public void setLoan_ID(int loan_ID) {
+    public void setLoan_ID(String loan_ID) {
         this.loan_ID = loan_ID;
     }
 
