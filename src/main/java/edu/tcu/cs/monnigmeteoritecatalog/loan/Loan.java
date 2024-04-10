@@ -1,15 +1,22 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
+import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.security.Timestamp;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Loan implements Serializable {
 
     @Id
-    private int sample_ID;
+    private int loan_ID;
+
+    @OneToMany
+    private List<Sample> samples_on_loan;
 
     private String loanee_name;
     private String loanee_email;
@@ -23,12 +30,20 @@ public class Loan implements Serializable {
 
     }
 
-    public int getSample_ID() {
-        return sample_ID;
+    public int getLoan_ID() {
+        return loan_ID;
     }
 
-    public void setSample_ID(int sample_ID) {
-        this.sample_ID = sample_ID;
+    public void setLoan_ID(int loan_ID) {
+        this.loan_ID = loan_ID;
+    }
+
+    public List<Sample> getSamples_on_loan() {
+        return samples_on_loan;
+    }
+
+    public void setSamples_on_loan(List<Sample> samples_on_loan) {
+        this.samples_on_loan = samples_on_loan;
     }
 
     public String getLoanee_name() {
