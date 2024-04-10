@@ -22,8 +22,8 @@ public class Loan implements Serializable {
     private String loanee_email;
     private String loanee_institution;
     private String loanee_address;
-    private Timestamp loan_start_date;
-    private Timestamp loan_due_date;
+    private String loan_start_date;
+    private String loan_due_date;
     private String loan_notes;
 
     public Loan() {
@@ -78,19 +78,19 @@ public class Loan implements Serializable {
         this.loanee_address = loanee_address;
     }
 
-    public Timestamp getLoan_start_date() {
+    public String getLoan_start_date() {
         return loan_start_date;
     }
 
-    public void setLoan_start_date(Timestamp loan_start_date) {
+    public void setLoan_start_date(String loan_start_date) {
         this.loan_start_date = loan_start_date;
     }
 
-    public Timestamp getLoan_due_date() {
+    public String getLoan_due_date() {
         return loan_due_date;
     }
 
-    public void setLoan_due_date(Timestamp loan_due_date) {
+    public void setLoan_due_date(String loan_due_date) {
         this.loan_due_date = loan_due_date;
     }
 
