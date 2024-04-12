@@ -3,16 +3,11 @@ package edu.tcu.cs.monnigmeteoritecatalog.sample;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.dto.SampleDto;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
-import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -54,7 +49,7 @@ public class SampleControllerTest {
         s1.setMonnig_number("M398.1");
         s1.setCountry("USA");
         s1.setSample_class("Ordinary Chondrite");
-        s1.setGroup("H");
+        s1.setSample_group("H");
         s1.setDate_found_year("1951");
         s1.setSample_weight_g((float)325.1);
 
@@ -64,7 +59,7 @@ public class SampleControllerTest {
         s2.setMonnig_number("M499.2");
         s2.setCountry("Canada");
         s2.setSample_class("Enstatite Chondrite");
-        s2.setGroup("EH");
+        s2.setSample_group("EH");
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
@@ -133,7 +128,7 @@ public class SampleControllerTest {
         savedSample.setMonnig_number("M239.1");
         savedSample.setCountry("USA");
         savedSample.setSample_class("Ordinary Chondrite");
-        savedSample.setGroup("L");
+        savedSample.setSample_group("L");
         savedSample.setDate_found_year("1941");
         savedSample.setSample_weight_g((float)453.1);
 
@@ -149,7 +144,7 @@ public class SampleControllerTest {
                 .andExpect(jsonPath("$.data.monnig_number").value(savedSample.getMonnig_number()))
                 .andExpect(jsonPath("$.data.country").value(savedSample.getCountry()))
                 .andExpect(jsonPath("$.data.sample_class").value(savedSample.getSample_class()))
-                .andExpect(jsonPath("$.data.group").value(savedSample.getGroup()))
+                .andExpect(jsonPath("$.data.group").value(savedSample.getSample_group()))
                 .andExpect(jsonPath("$.data.date_found_year").value(savedSample.getDate_found_year()))
                 .andExpect(jsonPath("$.data.sample_weight_g").value(savedSample.getSample_weight_g()));
     }
@@ -163,7 +158,7 @@ public class SampleControllerTest {
         updatedSample.setMonnig_number("New Monnig Num");
         updatedSample.setCountry("USA");
         updatedSample.setSample_class("Ordinary Chondrite");
-        updatedSample.setGroup("H");
+        updatedSample.setSample_group("H");
         updatedSample.setDate_found_year("1951");
         updatedSample.setSample_weight_g((float)325.1);
 
@@ -181,7 +176,7 @@ public class SampleControllerTest {
                 .andExpect(jsonPath("$.data.monnig_number").value(updatedSample.getMonnig_number()))
                 .andExpect(jsonPath("$.data.country").value(updatedSample.getCountry()))
                 .andExpect(jsonPath("$.data.sample_class").value(updatedSample.getSample_class()))
-                .andExpect(jsonPath("$.data.group").value(updatedSample.getGroup()))
+                .andExpect(jsonPath("$.data.group").value(updatedSample.getSample_group()))
                 .andExpect(jsonPath("$.data.date_found_year").value(updatedSample.getDate_found_year()))
                 .andExpect(jsonPath("$.data.sample_weight_g").value(updatedSample.getSample_weight_g()));
     }

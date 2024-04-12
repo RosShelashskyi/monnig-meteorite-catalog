@@ -1,7 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
 import jakarta.persistence.*;
-import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.SampleHistory;
 
 import java.io.File;
 import java.io.Serializable;
@@ -17,7 +16,7 @@ public class Sample implements Serializable {
     private String name;
     private String monnig_number;
     private String sample_class;
-    private String group;
+    private String sample_group;
     private String clan;
     private String country;
     private String location;
@@ -76,12 +75,12 @@ public class Sample implements Serializable {
         this.sample_class = sample_class;
     }
 
-    public String getGroup() {
-        return group;
+    public String getSample_group() {
+        return sample_group;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setSample_group(String group) {
+        this.sample_group = group;
     }
 
     public String getClan() {

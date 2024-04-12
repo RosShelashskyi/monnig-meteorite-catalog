@@ -16,7 +16,7 @@ public class SampleDtoToSampleConverter implements Converter<SampleDto, Sample> 
         sample.setMonnig_number(source.monnig_number());
         sample.setCountry(source.country());
         sample.setSample_class(source.sample_class());
-        sample.setGroup(source.group());
+        sample.setSample_group(source.group());
         sample.setDate_found_year(source.date_found_year());
         sample.setSample_weight_g(source.sample_weight_g());
         return sample;

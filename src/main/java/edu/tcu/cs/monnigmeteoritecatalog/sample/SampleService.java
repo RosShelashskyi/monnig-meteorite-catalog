@@ -43,7 +43,7 @@ public class SampleService {
                     oldSample.setName(update.getName());
                     oldSample.setMonnig_number(update.getMonnig_number());
                     oldSample.setSample_class(update.getSample_class());
-                    oldSample.setGroup(update.getGroup());
+                    oldSample.setSample_group(update.getSample_group());
                     oldSample.setClan(update.getClan());
                     oldSample.setCountry(update.getCountry());
                     oldSample.setLocation(update.getLocation());

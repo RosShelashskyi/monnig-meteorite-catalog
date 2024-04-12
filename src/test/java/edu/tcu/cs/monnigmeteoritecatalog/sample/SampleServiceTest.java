@@ -45,7 +45,7 @@ class SampleServiceTest {
         s1.setMonnig_number("M398.1");
         s1.setCountry("USA");
         s1.setSample_class("Ordinary Chondrite");
-        s1.setGroup("H");
+        s1.setSample_group("H");
         s1.setDate_found_year("1951");
         s1.setSample_weight_g((float)325.1);
 
@@ -55,7 +55,7 @@ class SampleServiceTest {
         s2.setMonnig_number("M499.2");
         s2.setCountry("Canada");
         s2.setSample_class("Enstatite Chondrite");
-        s2.setGroup("EH");
+        s2.setSample_group("EH");
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
@@ -77,7 +77,7 @@ class SampleServiceTest {
         s.setMonnig_number("M398.1");
         s.setCountry("USA");
         s.setSample_class("Ordinary Chondrite");
-        s.setGroup("H");
+        s.setSample_group("H");
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
@@ -93,7 +93,7 @@ class SampleServiceTest {
         assertThat(returnedSample.getCountry()).isEqualTo(s.getCountry());
         assertThat(returnedSample.getSample_class()).isEqualTo(s.getSample_class());
         assertThat(returnedSample.getClan()).isEqualTo(s.getClan());
-        assertThat(returnedSample.getGroup()).isEqualTo(s.getGroup());
+        assertThat(returnedSample.getSample_group()).isEqualTo(s.getSample_group());
         assertThat(returnedSample.getDate_found_year()).isEqualTo(s.getDate_found_year());
         assertThat(returnedSample.getSample_weight_g()).isEqualTo(s.getSample_weight_g());
         verify(this.sampleRepository, times(1)).findById(s.getSample_ID());
@@ -137,7 +137,7 @@ class SampleServiceTest {
         newSample.setMonnig_number("M239.1");
         newSample.setCountry("USA");
         newSample.setSample_class("Ordinary Chondrite");
-        newSample.setGroup("L");
+        newSample.setSample_group("L");
         newSample.setDate_found_year("1941");
         newSample.setSample_weight_g((float)453.1);
 
@@ -153,7 +153,7 @@ class SampleServiceTest {
         assertThat(savedSample.getMonnig_number()).isEqualTo(newSample.getMonnig_number());
         assertThat(savedSample.getCountry()).isEqualTo(newSample.getCountry());
         assertThat(savedSample.getSample_class()).isEqualTo(newSample.getSample_class());
-        assertThat(savedSample.getGroup()).isEqualTo(newSample.getGroup());
+        assertThat(savedSample.getSample_group()).isEqualTo(newSample.getSample_group());
         assertThat(savedSample.getDate_found_year()).isEqualTo(newSample.getDate_found_year());
         assertThat(savedSample.getSample_weight_g()).isEqualTo(newSample.getSample_weight_g());
         verify(sampleRepository, times(1)).save(newSample);
@@ -168,7 +168,7 @@ class SampleServiceTest {
         oldSample.setMonnig_number("M239.1");
         oldSample.setCountry("USA");
         oldSample.setSample_class("Ordinary Chondrite");
-        oldSample.setGroup("L");
+        oldSample.setSample_group("L");
         oldSample.setDate_found_year("1941");
         oldSample.setSample_weight_g((float)453.1);
 
@@ -177,7 +177,7 @@ class SampleServiceTest {
         update.setMonnig_number("M398.1");
         update.setCountry("USA");
         update.setSample_class("Ordinary Chondrite");
-        update.setGroup("H");
+        update.setSample_group("H");
         update.setDate_found_year("1951");
         update.setSample_weight_g((float)325.1);
 
@@ -202,7 +202,7 @@ class SampleServiceTest {
         update.setMonnig_number("M398.1");
         update.setCountry("USA");
         update.setSample_class("Ordinary Chondrite");
-        update.setGroup("H");
+        update.setSample_group("H");
         update.setDate_found_year("1951");
         update.setSample_weight_g((float)325.1);
 
@@ -226,7 +226,7 @@ class SampleServiceTest {
         s.setMonnig_number("M398.1");
         s.setCountry("USA");
         s.setSample_class("Ordinary Chondrite");
-        s.setGroup("H");
+        s.setSample_group("H");
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
