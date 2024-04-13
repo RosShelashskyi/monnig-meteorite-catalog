@@ -1,34 +1,49 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
+import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.security.Timestamp;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Loan implements Serializable {
 
     @Id
-    private int sample_ID;
+    private String loan_ID;
+
+    @OneToMany
+    private List<Sample> samples_on_loan;
 
     private String loanee_name;
     private String loanee_email;
     private String loanee_institution;
     private String loanee_address;
-    private Timestamp loan_start_date;
-    private Timestamp loan_due_date;
+    private String loan_start_date;
+    private String loan_due_date;
     private String loan_notes;
 
     public Loan() {
 
     }
 
-    public int getSample_ID() {
-        return sample_ID;
+    public String getLoan_ID() {
+        return loan_ID;
     }
 
-    public void setSample_ID(int sample_ID) {
-        this.sample_ID = sample_ID;
+    public void setLoan_ID(String loan_ID) {
+        this.loan_ID = loan_ID;
+    }
+
+    public List<Sample> getSamples_on_loan() {
+        return samples_on_loan;
+    }
+
+    public void setSamples_on_loan(List<Sample> samples_on_loan) {
+        this.samples_on_loan = samples_on_loan;
     }
 
     public String getLoanee_name() {
@@ -63,19 +78,19 @@ public class Loan implements Serializable {
         this.loanee_address = loanee_address;
     }
 
-    public Timestamp getLoan_start_date() {
+    public String getLoan_start_date() {
         return loan_start_date;
     }
 
-    public void setLoan_start_date(Timestamp loan_start_date) {
+    public void setLoan_start_date(String loan_start_date) {
         this.loan_start_date = loan_start_date;
     }
 
-    public Timestamp getLoan_due_date() {
+    public String getLoan_due_date() {
         return loan_due_date;
     }
 
-    public void setLoan_due_date(Timestamp loan_due_date) {
+    public void setLoan_due_date(String loan_due_date) {
         this.loan_due_date = loan_due_date;
     }
 
