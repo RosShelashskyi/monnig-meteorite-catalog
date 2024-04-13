@@ -1,15 +1,20 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.monnigmeteoritecatalog.loan.dto.LoanDto;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
+import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.hamcrest.Matchers;
+import org.hibernate.jdbc.Expectation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -46,7 +53,7 @@ public class LoanControllerTest {
     @BeforeEach
     void setUp(){
         Sample s1 = new Sample();
-        s1.setSample_ID(idWorker.nextId() + "");
+        s1.setSample_ID("0003");
         s1.setName("Abbott");
         s1.setMonnig_number("M398.1");
         s1.setCountry("USA");
@@ -56,7 +63,7 @@ public class LoanControllerTest {
         s1.setSample_weight_g((float)325.1);
 
         Sample s2 = new Sample();
-        s2.setSample_ID(idWorker.nextId() + "");
+        s2.setSample_ID("0004");
         s2.setName("Abee");
         s2.setMonnig_number("M499.2");
         s2.setCountry("Canada");
@@ -101,14 +108,14 @@ public class LoanControllerTest {
         given(this.loanService.findById("0001")).willReturn(this.loans.getFirst());
 
         //when and then
-        this.mockMvc.perform(get("/loan/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find One Success"))
                 .andExpect(jsonPath("$.data.id").value("0001"))
                 .andExpect(jsonPath("$.data.loanee_name").value("John Doe"))
-                .andExpect(jsonPath("$.data.loanee_email").value("jonhdoe@example.com"))
-                .andExpect(jsonPath("$.data.loanee_insitution").value("Meteorite Research Institute"))
+                .andExpect(jsonPath("$.data.loanee_email").value("johndoe@example.com"))
+                .andExpect(jsonPath("$.data.loanee_institution").value("Meteorite Research Institute"))
                 .andExpect(jsonPath("$.data.loanee_address").value("123 Meteorite Street, Cityville, USA"))
                 .andExpect(jsonPath("$.data.loan_start_date").value("2024-04-01 10:00:00"))
                 .andExpect(jsonPath("$.data.loan_due_date").value("2024-04-15 10:00:00"))
@@ -118,13 +125,13 @@ public class LoanControllerTest {
     @Test
     void testLoanFindByIdNotFound() throws Exception{
         //given
-        given(this.loanService.findById("0001")).willThrow(new SampleNotFoundException("0001"));
+        given(this.loanService.findById("0001")).willThrow(new ObjectNotFoundException("loan", "0001"));
         //when and then
-        this.mockMvc.perform(get("/loan/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find loan with Id 0001"))
-                .andExpect(jsonPath("$.data.id").isEmpty());
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @Test
@@ -132,14 +139,181 @@ public class LoanControllerTest {
         //given
         given(this.loanService.findAll()).willReturn(this.loans);
         //when and then
-        this.mockMvc.perform(get("/loan").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
-                .andExpect(jsonPath("$.message").value("Find One Success"))
+                .andExpect(jsonPath("$.message").value("Find All Success"))
                 .andExpect(jsonPath("$.data", Matchers.hasSize(this.loans.size())))
                 .andExpect(jsonPath("$.data[0].id").value("0001"))
                 .andExpect(jsonPath("$.data[1].id").value("0002"))
-                .andExpect(jsonPath("$.date[0].loanee_name").value("John Doe"))
-                .andExpect(jsonPath("$.date[1].loanee_name").value("Jane Smith"));
+                .andExpect(jsonPath("$.data[0].loanee_name").value("John Doe"))
+                .andExpect(jsonPath("$.data[1].loanee_name").value("Jane Smith"));
+    }
+
+    @Test
+    void testAddLoanSuccess() throws Exception{
+        //given
+        Sample s1 = new Sample();
+        s1.setSample_ID("0003");
+        s1.setName("Abbott");
+        s1.setMonnig_number("M398.1");
+        s1.setCountry("USA");
+        s1.setSample_class("Ordinary Chondrite");
+        s1.setSample_group("H");
+        s1.setDate_found_year("1951");
+        s1.setSample_weight_g((float)325.1);
+
+        Sample s2 = new Sample();
+        s2.setSample_ID("0004");
+        s2.setName("Abee");
+        s2.setMonnig_number("M499.2");
+        s2.setCountry("Canada");
+        s2.setSample_class("Enstatite Chondrite");
+        s2.setSample_group("EH");
+        s2.setDate_found_year("1952");
+        s2.setSample_weight_g((float)453.1);
+
+        LoanDto loanDto = new LoanDto(null,
+                Arrays.asList(s1, s2),
+                "John Doe",
+                "johndoe@example.com",
+                "Meteorite Research Institute",
+                "123 Meteorite Street, Cityville, USA",
+                "2024-04-01 10:00:00",
+                "2024-04-15 10:00:00",
+                "Fragile meteorite, handle with care.");
+        String json = this.objectMapper.writeValueAsString(loanDto);
+
+        Loan l1 = new Loan();
+        l1.setLoan_ID("0001");
+        l1.setLoanee_name("John Doe");
+        l1.setLoanee_email("johndoe@example.com");
+        l1.setLoanee_institution("Meteorite Research Institute");
+        l1.setLoanee_address("123 Meteorite Street, Cityville, USA");
+        l1.setLoan_start_date("2024-04-01 10:00:00");
+        l1.setLoan_due_date("2024-04-15 10:00:00");
+        l1.setLoan_notes("Fragile meteorite, handle with care.");
+
+        given(this.loanService.save(Mockito.any(Loan.class))).willReturn(l1);
+
+        //when and then
+        this.mockMvc.perform(post("/api/loan").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Add Success"))
+                .andExpect(jsonPath("$.data.id").isNotEmpty())
+                .andExpect(jsonPath("$.data.samples_on_loan").value(l1.getSamples_on_loan()))
+                .andExpect(jsonPath("$.data.loanee_name").value(l1.getLoanee_name()))
+                .andExpect(jsonPath("$.data.loanee_email").value(l1.getLoanee_email()))
+                .andExpect(jsonPath("$.data.loanee_institution").value(l1.getLoanee_institution()))
+                .andExpect(jsonPath("$.data.loanee_address").value(l1.getLoanee_address()))
+                .andExpect(jsonPath("$.data.loan_start_date").value(l1.getLoan_start_date()))
+                .andExpect(jsonPath("$.data.loan_due_date").value(l1.getLoan_due_date()))
+                .andExpect(jsonPath("$.data.loan_notes").value(l1.getLoan_notes()));
+    }
+
+    @Test
+    void testUpdateLoanSuccess() throws Exception{
+        //given
+        Sample s1 = new Sample();
+        s1.setSample_ID("0003");
+        s1.setName("Abbott");
+        s1.setMonnig_number("M398.1");
+        s1.setCountry("USA");
+        s1.setSample_class("Ordinary Chondrite");
+        s1.setSample_group("H");
+        s1.setDate_found_year("1951");
+        s1.setSample_weight_g((float)325.1);
+
+        Sample s2 = new Sample();
+        s2.setSample_ID("0004");
+        s2.setName("Abee");
+        s2.setMonnig_number("M499.2");
+        s2.setCountry("Canada");
+        s2.setSample_class("Enstatite Chondrite");
+        s2.setSample_group("EH");
+        s2.setDate_found_year("1952");
+        s2.setSample_weight_g((float)453.1);
+
+        LoanDto loanDto = new LoanDto("0001",
+                Arrays.asList(s1, s2),
+                "John Doe",
+                "johndoe@example.com",
+                "Meteorite Research Institute",
+                "123 Meteorite Street, Cityville, USA",
+                "2024-04-01 10:00:00",
+                "2024-04-15 10:00:00",
+                "Fragile meteorite, handle with care.");
+        String json = this.objectMapper.writeValueAsString(loanDto);
+
+        Loan l2 = new Loan();
+        l2.setLoan_ID("0001");
+        l2.setLoanee_name("Jane Smith");
+        l2.setLoanee_email("janesmith@example.com");
+        l2.setLoanee_institution("Space Exploration Society");
+        l2.setLoanee_address("456 Galaxy Avenue, Star City, Canada");
+        l2.setLoan_start_date("2024-03-20 09:30:00");
+        l2.setLoan_due_date("2024-04-10 09:30:00");
+        l2.setLoan_notes("Rare meteorite, research project.");
+
+        given(this.loanService.update(eq("0001"), Mockito.any(Loan.class))).willReturn(l2);
+
+        //when and then
+        this.mockMvc.perform(put("/api/loan/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Update Success"))
+                .andExpect(jsonPath("$.data.id").value("0001"))
+                .andExpect(jsonPath("$.data.samples_on_loan").value(l2.getSamples_on_loan()))
+                .andExpect(jsonPath("$.data.loanee_name").value(l2.getLoanee_name()))
+                .andExpect(jsonPath("$.data.loanee_email").value(l2.getLoanee_email()))
+                .andExpect(jsonPath("$.data.loanee_institution").value(l2.getLoanee_institution()))
+                .andExpect(jsonPath("$.data.loanee_address").value(l2.getLoanee_address()))
+                .andExpect(jsonPath("$.data.loan_start_date").value(l2.getLoan_start_date()))
+                .andExpect(jsonPath("$.data.loan_due_date").value(l2.getLoan_due_date()))
+                .andExpect(jsonPath("$.data.loan_notes").value(l2.getLoan_notes()));
+    }
+
+    @Test
+    void testUpdateLoanErrorWithNonExistsId() throws Exception {
+        //given
+        Sample s1 = new Sample();
+        s1.setSample_ID("0003");
+        s1.setName("Abbott");
+        s1.setMonnig_number("M398.1");
+        s1.setCountry("USA");
+        s1.setSample_class("Ordinary Chondrite");
+        s1.setSample_group("H");
+        s1.setDate_found_year("1951");
+        s1.setSample_weight_g((float)325.1);
+
+        Sample s2 = new Sample();
+        s2.setSample_ID("0004");
+        s2.setName("Abee");
+        s2.setMonnig_number("M499.2");
+        s2.setCountry("Canada");
+        s2.setSample_class("Enstatite Chondrite");
+        s2.setSample_group("EH");
+        s2.setDate_found_year("1952");
+        s2.setSample_weight_g((float)453.1);
+
+        LoanDto loanDto = new LoanDto("0001",
+                Arrays.asList(s1, s2),
+                "John Doe",
+                "johndoe@example.com",
+                "Meteorite Research Institute",
+                "123 Meteorite Street, Cityville, USA",
+                "2024-04-01 10:00:00",
+                "2024-04-15 10:00:00",
+                "Fragile meteorite, handle with care.");
+        String json = this.objectMapper.writeValueAsString(loanDto);
+
+        given(this.loanService.update(eq("0001") ,Mockito.any(Loan.class))).willThrow(new ObjectNotFoundException("loan", "0001"));
+
+        this.mockMvc.perform(put("/api/loan/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(false))
+                .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
+                .andExpect(jsonPath("$.message").value("Could not find loan with Id 0001"))
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 }

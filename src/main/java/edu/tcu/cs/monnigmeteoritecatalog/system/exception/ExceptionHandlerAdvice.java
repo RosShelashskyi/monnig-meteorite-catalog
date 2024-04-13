@@ -16,4 +16,10 @@ public class ExceptionHandlerAdvice {
     Result handleSampleNotFoundException(SampleNotFoundException ex) {
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
     }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Result handleObjectNotFoundException(ObjectNotFoundException ex){
+        return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
+    }
 }
