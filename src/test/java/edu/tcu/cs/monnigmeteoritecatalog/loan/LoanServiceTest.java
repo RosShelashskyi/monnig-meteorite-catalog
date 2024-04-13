@@ -48,7 +48,7 @@ public class LoanServiceTest {
         s1.setMonnig_number("M398.1");
         s1.setCountry("USA");
         s1.setSample_class("Ordinary Chondrite");
-        s1.setGroup("H");
+        s1.setSample_group("H");
         s1.setDate_found_year("1951");
         s1.setSample_weight_g((float)325.1);
 
@@ -58,7 +58,7 @@ public class LoanServiceTest {
         s2.setMonnig_number("M499.2");
         s2.setCountry("Canada");
         s2.setSample_class("Enstatite Chondrite");
-        s2.setGroup("EH");
+        s2.setSample_group("EH");
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
@@ -100,7 +100,7 @@ public class LoanServiceTest {
         s.setMonnig_number("M398.1");
         s.setCountry("USA");
         s.setSample_class("Ordinary Chondrite");
-        s.setGroup("H");
+        s.setSample_group("H");
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
@@ -171,7 +171,7 @@ public class LoanServiceTest {
         s.setMonnig_number("M398.1");
         s.setCountry("USA");
         s.setSample_class("Ordinary Chondrite");
-        s.setGroup("H");
+        s.setSample_group("H");
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
@@ -214,7 +214,7 @@ public class LoanServiceTest {
         s1.setMonnig_number("M398.1");
         s1.setCountry("USA");
         s1.setSample_class("Ordinary Chondrite");
-        s1.setGroup("H");
+        s1.setSample_group("H");
         s1.setDate_found_year("1951");
         s1.setSample_weight_g((float)325.1);
 
@@ -224,7 +224,7 @@ public class LoanServiceTest {
         s2.setMonnig_number("M499.2");
         s2.setCountry("Canada");
         s2.setSample_class("Enstatite Chondrite");
-        s2.setGroup("EH");
+        s2.setSample_group("EH");
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
@@ -271,7 +271,7 @@ public class LoanServiceTest {
         s.setMonnig_number("M398.1");
         s.setCountry("USA");
         s.setSample_class("Ordinary Chondrite");
-        s.setGroup("H");
+        s.setSample_group("H");
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
