@@ -1,6 +1,7 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -15,7 +16,7 @@ public class Loan implements Serializable {
     @Id
     private String loan_ID;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Sample> samples_on_loan;
 
     private String loanee_name;
