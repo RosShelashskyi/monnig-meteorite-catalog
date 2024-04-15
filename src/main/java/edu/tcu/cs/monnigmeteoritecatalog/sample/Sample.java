@@ -41,8 +41,8 @@ public class Sample implements Serializable {
 
 
 
-      @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
-      private List<Entry> sample_history = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner_id")
+    private List<Entry> sample_history = new ArrayList<>();
 
     public Sample() {
     }
@@ -237,10 +237,6 @@ public class Sample implements Serializable {
 
     public void setSample_history(List<Entry> sample_history) {
         this.sample_history = sample_history;
-    }
-    public void addEntry(Entry entry) {
-        entry.setOwner(this);
-        this.sample_history.add(entry);
     }
 
 }

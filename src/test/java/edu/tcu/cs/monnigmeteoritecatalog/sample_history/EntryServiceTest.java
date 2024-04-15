@@ -64,12 +64,6 @@ public class EntryServiceTest {
     // Find a specific history entry by its unique ID
     @Test
     void testFindByIdSuccess() {
-        // Fake entry
-        Entry entry = new Entry();
-        entry.setEntry_id(idWorker.nextId() + "");
-        entry.setDate("11/1/2023");
-        entry.setCategory("Created");
-        entry.setNotes("Migrated from Old Monnig Database");
 
         // Create a fake sample to link to
         Sample s = new Sample();
@@ -82,8 +76,13 @@ public class EntryServiceTest {
         s.setDate_found_year("1951");
         s.setSample_weight_g((float)325.1);
 
-        // Make the entries owner the fake sample
-        entry.setOwner(s);
+        // Fake entry
+        Entry entry = new Entry();
+        entry.setEntry_id(idWorker.nextId() + "");
+        entry.setDate("11/1/2023");
+        entry.setCategory("Created");
+        entry.setNotes("Migrated from Old Monnig Database");
+        entry.setOwner_id(s.getSample_ID());
 
         // Given
         given(this.entryRepository.findById(entry.getEntry_id())).willReturn(Optional.of(entry));

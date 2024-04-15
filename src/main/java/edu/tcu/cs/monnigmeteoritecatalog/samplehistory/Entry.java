@@ -1,11 +1,10 @@
 package edu.tcu.cs.monnigmeteoritecatalog.samplehistory;
 
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Entity
 public class Entry implements Serializable {
@@ -17,11 +16,8 @@ public class Entry implements Serializable {
     private String date;
     private String category;
     private String notes;
+    private String owner_id;
 
-
-    // One sample can have many different entries, all of these entries combined make up the "Sample History"
-    @ManyToOne
-    private Sample owner;
 
     public Entry() {
 
@@ -59,12 +55,12 @@ public class Entry implements Serializable {
         this.notes = notes;
     }
 
-    public Sample getOwner() {
-        return owner;
+    public String getOwner_id() {
+        return owner_id;
     }
 
-    public void setOwner(Sample owner) {
-        this.owner = owner;
+    public void setOwner_id(String owner_id) {
+        this.owner_id = owner_id;
     }
 }
 

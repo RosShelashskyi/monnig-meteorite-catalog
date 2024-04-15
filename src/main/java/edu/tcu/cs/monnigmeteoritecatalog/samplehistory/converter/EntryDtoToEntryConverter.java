@@ -14,6 +14,7 @@ public class EntryDtoToEntryConverter implements Converter<EntryDto, Entry> {
         entry.setDate(source.date());
         entry.setCategory(source.category());
         entry.setNotes(source.notes());
+        entry.setOwner_id(source.owner_id());
         return entry;
     }
 }

@@ -3,6 +3,9 @@ package edu.tcu.cs.monnigmeteoritecatalog.sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.converter.SampleDtoToSampleConverter;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.converter.SampleToSampleDtoConverter;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.dto.SampleDto;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.converter.EntryToEntryDtoConverter;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.dto.EntryDto;
 import edu.tcu.cs.monnigmeteoritecatalog.system.Result;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
 import jakarta.validation.Valid;
@@ -20,10 +23,13 @@ public class SampleController {
 
     private final SampleDtoToSampleConverter sampleDtoToSampleConverter;
 
-    public SampleController(SampleService sampleService, SampleToSampleDtoConverter sampleToSampleDtoConverter, SampleDtoToSampleConverter sampleDtoToSampleConverter) {
+    private final EntryToEntryDtoConverter entryToEntryDtoConverter;
+
+    public SampleController(SampleService sampleService, SampleToSampleDtoConverter sampleToSampleDtoConverter, SampleDtoToSampleConverter sampleDtoToSampleConverter, EntryToEntryDtoConverter entryToEntryDtoConverter) {
         this.sampleService = sampleService;
         this.sampleToSampleDtoConverter = sampleToSampleDtoConverter;
         this.sampleDtoToSampleConverter = sampleDtoToSampleConverter;
+        this.entryToEntryDtoConverter = entryToEntryDtoConverter;
     }
     @GetMapping("/{sampleId}")
     public Result findSampleById(@PathVariable String sampleId) {
@@ -61,6 +67,15 @@ public class SampleController {
     public Result deleteSample(@PathVariable String sampleId){
         this.sampleService.delete(sampleId);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
+    }
+    @GetMapping("/history/{sample_id}")
+    public Result findSampleHistory(@PathVariable String sample_id) {
+        Sample owner = this.sampleService.findById(sample_id);
+        List<Entry> sampleHistory = owner.getSample_history();
+        List<EntryDto> sampleHistoryDto = sampleHistory.stream()
+                .map(this.entryToEntryDtoConverter::convert)
+                .toList();
+        return new Result(true, StatusCode.SUCCESS, "Found History", sampleHistoryDto);
     }
 
 

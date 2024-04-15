@@ -22,6 +22,6 @@ public class EntryToEntryDtoConverter implements Converter<Entry, EntryDto> {
                             source.getDate(),
                             source.getCategory(),
                             source.getNotes(),
-                            source.getOwner() != null ? this.sampleToSampleDtoConverter.convert(source.getOwner()) : null);
+                            source.getOwner_id());
     }
 }

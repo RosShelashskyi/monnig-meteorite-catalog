@@ -16,10 +16,13 @@ public class SampleService {
 
     private final IdWorker idWorker;
 
+    private final EntryRepository entryRepository;
 
-    public SampleService(SampleRepository sampleRepository, EntryRepository entryRepository, IdWorker idWorker) {
+
+    public SampleService(SampleRepository sampleRepository, IdWorker idWorker, EntryRepository entryRepository) {
         this.sampleRepository = sampleRepository;
         this.idWorker = idWorker;
+        this.entryRepository = entryRepository;
     }
 
     //function for internal use for finding samples by internal ids

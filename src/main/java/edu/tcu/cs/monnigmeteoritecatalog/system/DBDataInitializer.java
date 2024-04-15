@@ -53,6 +53,7 @@ public class DBDataInitializer implements CommandLineRunner {
         entry1.setDate("11/1/2023");
         entry1.setCategory("Created");
         entry1.setNotes("Migrated from Old Monnig Database");
+        entry1.setOwner_id(s1.getSample_ID());
 
 
         Entry entry2 = new Entry();
@@ -60,9 +61,10 @@ public class DBDataInitializer implements CommandLineRunner {
         entry2.setDate("12/5/2023");
         entry2.setCategory("Cut");
         entry2.setNotes("Cut into three subsamples");
+        entry2.setOwner_id(s2.getSample_ID());
 
-        s1.addEntry(entry1);
-        s2.addEntry(entry2);
+        entryRepository.save(entry1);
+        entryRepository.save(entry2);
 
         sampleRepository.save(s1);
         sampleRepository.save(s2);
