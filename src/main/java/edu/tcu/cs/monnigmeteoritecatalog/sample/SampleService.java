@@ -1,5 +1,7 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import jakarta.transaction.Transactional;
@@ -14,7 +16,8 @@ public class SampleService {
 
     private final IdWorker idWorker;
 
-    public SampleService(SampleRepository sampleRepository, IdWorker idWorker) {
+
+    public SampleService(SampleRepository sampleRepository, EntryRepository entryRepository, IdWorker idWorker) {
         this.sampleRepository = sampleRepository;
         this.idWorker = idWorker;
     }
@@ -73,4 +76,5 @@ public class SampleService {
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
         this.sampleRepository.deleteById(sampleId);
     }
+
 }

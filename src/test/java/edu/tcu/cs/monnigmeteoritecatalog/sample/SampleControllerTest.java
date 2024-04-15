@@ -3,6 +3,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.sample;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.dto.SampleDto;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
+import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,12 +93,12 @@ public class SampleControllerTest {
     @Test
     void testSampleFindByIdNotFound() throws Exception{
         //Given
-        given(this.sampleService.findById("0001")).willThrow(new SampleNotFoundException("0001"));
+        given(this.sampleService.findById("0001")).willThrow(new ObjectNotFoundException("sample", "0001"));
         // When and then
         this.mockMvc.perform(get("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
-                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001 :("))
+                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
@@ -186,13 +187,13 @@ public class SampleControllerTest {
         String json = this.objectMapper.writeValueAsString(sampleDto);
 
         // Given
-        given(this.sampleService.update(eq("0001"), Mockito.any(Sample.class))).willThrow(new SampleNotFoundException("0001"));
+        given(this.sampleService.update(eq("0001"), Mockito.any(Sample.class))).willThrow(new ObjectNotFoundException("sample", "0001"));
 
         // When and then
         this.mockMvc.perform(put("/api/samples/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
-                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001 :("))
+                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
     @Test
@@ -207,11 +208,11 @@ public class SampleControllerTest {
     }
     @Test
     void testDeleteSampleErrorWithNonExistentId() throws Exception {
-        doThrow(new SampleNotFoundException("0001")).when(this.sampleService).delete("0001");
+        doThrow(new ObjectNotFoundException("sample", "0001")).when(this.sampleService).delete("0001");
         this.mockMvc.perform(delete("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
-                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001 :("))
+                .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))
                 .andExpect(jsonPath("$.data").isEmpty());
 
     }

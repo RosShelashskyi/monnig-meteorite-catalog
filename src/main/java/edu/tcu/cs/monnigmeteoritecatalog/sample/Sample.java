@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
 
 //class for representing meteorite samples
 @Entity
@@ -37,8 +39,10 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
-//    @OneToMany
-//    private List<SampleHistory> history;
+
+
+      @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
+      private List<Entry> sample_history = new ArrayList<>();
 
     public Sample() {
     }
@@ -227,11 +231,16 @@ public class Sample implements Serializable {
         this.additional_class_info = additional_class_info;
     }
 
-//    public List<SampleHistory> getHistory() {
-//        return history;
-//    }
-//
-//    public void setHistory(List<SampleHistory> history) {
-//        this.history = history;
-//    }
+    public List<Entry> getSample_history() {
+        return sample_history;
+    }
+
+    public void setSample_history(List<Entry> sample_history) {
+        this.sample_history = sample_history;
+    }
+    public void addEntry(Entry entry) {
+        entry.setOwner(this);
+        this.sample_history.add(entry);
+    }
+
 }

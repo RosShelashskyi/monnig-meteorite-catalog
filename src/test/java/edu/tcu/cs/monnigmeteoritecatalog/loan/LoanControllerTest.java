@@ -1,15 +1,12 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.dto.LoanDto;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
-import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
 import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.hamcrest.Matchers;
-import org.hibernate.jdbc.Expectation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
