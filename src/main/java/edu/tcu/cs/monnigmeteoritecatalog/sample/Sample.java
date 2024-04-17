@@ -39,8 +39,7 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
-
-
+    // Hold the sample history for this sample
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner_id")
     private List<Entry> sample_history = new ArrayList<>();
 
@@ -233,6 +232,10 @@ public class Sample implements Serializable {
 
     public List<Entry> getSample_history() {
         return sample_history;
+    }
+
+    public Integer getSampleHistorySize() {
+        return this.sample_history.size();
     }
 
     public void setSample_history(List<Entry> sample_history) {

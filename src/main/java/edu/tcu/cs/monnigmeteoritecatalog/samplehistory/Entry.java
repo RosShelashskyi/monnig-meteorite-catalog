@@ -18,7 +18,6 @@ public class Entry implements Serializable {
     private String notes;
     private String owner_id;
 
-
     public Entry() {
 
     }

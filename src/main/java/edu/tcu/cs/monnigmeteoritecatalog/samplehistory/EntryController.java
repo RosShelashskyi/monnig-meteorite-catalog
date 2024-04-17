@@ -47,10 +47,9 @@ public class EntryController {
         assert newEntry != null;
         Entry savedEntry = this.entryService.save(newEntry);
         EntryDto savedEntryDto = this.entryToEntryDtoConverter.convert(savedEntry);
-        return new Result(true, StatusCode.SUCCESS, "Add success", savedEntryDto);
+        return new Result(true, StatusCode.SUCCESS, "Add Success", savedEntryDto);
     }
     // Update entry ?
-
     @DeleteMapping("/{entry_id}")
     public Result deleteEntry(@PathVariable String entry_id) {
         this.entryService.delete(entry_id);
