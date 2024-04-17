@@ -82,7 +82,7 @@ public class EntryServiceTest {
         entry.setDate("11/1/2023");
         entry.setCategory("Created");
         entry.setNotes("Migrated from Old Monnig Database");
-        entry.setOwner_id(s.getSample_ID());
+        entry.setSample(s);
 
         // Given
         given(this.entryRepository.findById(entry.getEntry_id())).willReturn(Optional.of(entry));

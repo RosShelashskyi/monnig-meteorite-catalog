@@ -49,18 +49,31 @@ public class EntryControllerTest {
 
     @BeforeEach
     void setUp() {
+        Sample s1 = new Sample();
+        s1.setSample_ID("0001");
+        s1.setName("Abbott");
+        s1.setMonnig_number("M398.1");
+        s1.setCountry("USA");
+        s1.setSample_class("Ordinary Chondrite");
+        s1.setSample_group("H");
+        s1.setDate_found_year("1951");
+        s1.setSample_weight_g((float)325.1);
+
+
         Entry entry1 = new Entry();
         entry1.setEntry_id("0002");
         entry1.setDate("11/1/2023");
         entry1.setCategory("Created");
         entry1.setNotes("Migrated from Old Monnig Database");
+        entry1.setSample(s1);
 
 
         Entry entry2 = new Entry();
-        entry1.setEntry_id("0003");
-        entry1.setDate("12/5/2023");
-        entry1.setCategory("Cut");
-        entry1.setNotes("Cut into three subsamples");
+        entry2.setEntry_id("0003");
+        entry2.setDate("12/5/2023");
+        entry2.setCategory("Cut");
+        entry2.setNotes("Cut into three subsamples");
+        entry2.setSample(s1);
 
         this.entryList = new ArrayList<>();
         this.entryList.add(entry1);
@@ -68,17 +81,14 @@ public class EntryControllerTest {
     }
     @Test
     void testAddEntrySuccess() throws Exception {
-        EntryDto entryDto = new EntryDto(null, "12/22/2023", "Cut", "Removing from database", "0001");
+        EntryDto entryDto = new EntryDto(null, "12/22/2023", "Cut", "Removing from database", null);
         String json = this.objectMapper.writeValueAsString(entryDto);
-
-
         // entry to test entry add
         Entry entry = new Entry();
         entry.setEntry_id(idWorker.nextId() + "");
         entry.setDate("12/22/2023");
         entry.setCategory("Cut");
         entry.setNotes("Removing from database");
-        entry.setOwner_id("0001");
         given(this.entryService.save(Mockito.any(Entry.class))).willReturn(entry);
 
         // When and then
@@ -89,8 +99,7 @@ public class EntryControllerTest {
                 .andExpect(jsonPath("$.data.id").isNotEmpty())
                 .andExpect(jsonPath("$.data.date").value(entry.getDate()))
                 .andExpect(jsonPath("$.data.category").value(entry.getCategory()))
-                .andExpect(jsonPath("$.data.notes").value(entry.getNotes()))
-                .andExpect(jsonPath("$.data.owner_id").value(entry.getOwner_id()));
+                .andExpect(jsonPath("$.data.notes").value(entry.getNotes()));
 
     }
     @Test

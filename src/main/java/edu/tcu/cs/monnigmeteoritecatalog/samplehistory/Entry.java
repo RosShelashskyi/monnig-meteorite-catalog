@@ -16,7 +16,9 @@ public class Entry implements Serializable {
     private String date;
     private String category;
     private String notes;
-    private String owner_id;
+    // Sample
+    @ManyToOne
+    private Sample sample;
 
     public Entry() {
 
@@ -54,12 +56,12 @@ public class Entry implements Serializable {
         this.notes = notes;
     }
 
-    public String getOwner_id() {
-        return owner_id;
+    public Sample getSample() {
+        return sample;
     }
 
-    public void setOwner_id(String owner_id) {
-        this.owner_id = owner_id;
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 }
 

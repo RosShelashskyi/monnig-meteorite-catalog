@@ -49,6 +49,7 @@ public class SampleController {
     @PostMapping
     public Result addSample(@Valid @RequestBody SampleDto sampleDto){
         Sample newSample = this.sampleDtoToSampleConverter.convert(sampleDto);
+        assert newSample != null;
         Sample savedSample = this.sampleService.save(newSample);
         SampleDto savedSampleDto = this.sampleToSampleDtoConverter.convert(savedSample);
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedSampleDto);
@@ -70,8 +71,8 @@ public class SampleController {
     }
     @GetMapping("/history/{sample_id}")
     public Result findSampleHistory(@PathVariable String sample_id) {
-        Sample owner = this.sampleService.findById(sample_id);
-        List<Entry> sampleHistory = owner.getSample_history();
+        Sample sample = this.sampleService.findById(sample_id);
+        List<Entry> sampleHistory = sample.getSample_history();
         List<EntryDto> sampleHistoryDto = sampleHistory.stream()
                 .map(this.entryToEntryDtoConverter::convert)
                 .toList();
