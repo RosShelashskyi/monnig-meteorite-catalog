@@ -1,6 +1,5 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
-import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryService;
 import jakarta.persistence.*;
 
 import java.io.File;
@@ -237,6 +236,10 @@ public class Sample implements Serializable {
     public void addHistoryEntry(Entry historyEntry) {
         historyEntry.setSample(this);
         this.sample_history.add(historyEntry);
+    }
+
+    public Integer getSampleHistorySize() {
+        return this.sample_history.size();
     }
 
     public void setSample_history(List<Entry> sample_history) {

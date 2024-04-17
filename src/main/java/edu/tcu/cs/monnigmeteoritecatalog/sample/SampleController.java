@@ -4,13 +4,10 @@ import edu.tcu.cs.monnigmeteoritecatalog.sample.converter.SampleDtoToSampleConve
 import edu.tcu.cs.monnigmeteoritecatalog.sample.converter.SampleToSampleDtoConverter;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.dto.SampleDto;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
-import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryService;
-import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.converter.EntryDtoToEntryConverter;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.converter.EntryToEntryDtoConverter;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.dto.EntryDto;
 import edu.tcu.cs.monnigmeteoritecatalog.system.Result;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
-import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,20 +25,11 @@ public class SampleController {
 
     private final EntryToEntryDtoConverter entryToEntryDtoConverter;
 
-    private final EntryDtoToEntryConverter entryDtoToEntryConverter;
-
-    private final EntryService entryService;
-
-    private final SampleRepository sampleRepository;
-
-    public SampleController(SampleService sampleService, SampleToSampleDtoConverter sampleToSampleDtoConverter, SampleDtoToSampleConverter sampleDtoToSampleConverter, EntryToEntryDtoConverter entryToEntryDtoConverter, EntryDtoToEntryConverter entryDtoToEntryConverter, EntryService entryService, SampleRepository sampleRepository) {
+    public SampleController(SampleService sampleService, SampleToSampleDtoConverter sampleToSampleDtoConverter, SampleDtoToSampleConverter sampleDtoToSampleConverter, EntryToEntryDtoConverter entryToEntryDtoConverter) {
         this.sampleService = sampleService;
         this.sampleToSampleDtoConverter = sampleToSampleDtoConverter;
         this.sampleDtoToSampleConverter = sampleDtoToSampleConverter;
         this.entryToEntryDtoConverter = entryToEntryDtoConverter;
-        this.entryDtoToEntryConverter = entryDtoToEntryConverter;
-        this.entryService = entryService;
-        this.sampleRepository = sampleRepository;
     }
     @GetMapping("/{sampleId}")
     public Result findSampleById(@PathVariable String sampleId) {
@@ -81,24 +69,16 @@ public class SampleController {
         this.sampleService.delete(sampleId);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
     }
-    @GetMapping("/history/{sampleId}")
-    public Result findSampleHistory(@PathVariable String sampleId) {
-        Sample sample = this.sampleService.findById(sampleId);
+    @GetMapping("/history/{sample_id}")
+    public Result findSampleHistory(@PathVariable String sample_id) {
+        Sample sample = this.sampleService.findById(sample_id);
         List<Entry> sampleHistory = sample.getSample_history();
         List<EntryDto> sampleHistoryDto = sampleHistory.stream()
                 .map(this.entryToEntryDtoConverter::convert)
                 .toList();
         return new Result(true, StatusCode.SUCCESS, "Found History", sampleHistoryDto);
     }
-   @PostMapping("/history/{sampleId}")
-    public Result addEntry(@PathVariable String sampleId, @Valid @RequestBody EntryDto entryDto){
-        Sample sample = this.sampleRepository.findById(sampleId).orElseThrow(() -> new ObjectNotFoundException("sample", sampleId)); // owner
-        Entry newEntry = this.entryDtoToEntryConverter.convert(entryDto); // get the new entry
-        assert newEntry != null;
-        newEntry.setSample(sample); // set the owner
-        Entry savedEntry = this.entryService.save(newEntry);
-        EntryDto savedEntryDto = this.entryToEntryDtoConverter.convert(savedEntry);
-        return new Result(true, StatusCode.SUCCESS, "Entry Created", savedEntryDto);
-    }
+
+
 
 }

@@ -11,12 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/*
-We could remove findById and findAll I think, they may not be relevant
-to the whole scheme.
- */
-
-
 @RestController
 @RequestMapping("/api/history")
 public class EntryController {

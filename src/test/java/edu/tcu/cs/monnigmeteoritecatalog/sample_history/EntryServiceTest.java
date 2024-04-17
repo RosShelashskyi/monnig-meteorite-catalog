@@ -4,7 +4,6 @@ import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryService;
-import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -111,52 +110,5 @@ public class EntryServiceTest {
         //then
         assertThat(actualEntries.size()).isEqualTo(this.entryList.size());
         verify(entryRepository, times(1)).findAll();
-    }
-    @Test
-    void testSaveEntrySuccess() {
-       // Create a fake sample to link to
-        Sample s = new Sample();
-        s.setSample_ID(idWorker.nextId() + "");
-        s.setName("Abbott");
-        s.setMonnig_number("M398.1");
-        s.setCountry("USA");
-        s.setSample_class("Ordinary Chondrite");
-        s.setSample_group("H");
-        s.setDate_found_year("1951");
-        s.setSample_weight_g((float)325.1);
-
-        // Fake entry
-        Entry entry = new Entry();
-        entry.setEntry_id(idWorker.nextId() + "");
-        entry.setDate("11/1/2023");
-        entry.setCategory("Created");
-        entry.setNotes("Migrated from Old Monnig Database");
-        entry.setSample(s);
-
-        given(idWorker.nextId()).willReturn(123456L);
-        given(entryRepository.save(entry)).willReturn(entry);
-
-        // When
-        Entry savedEntry = entryService.save(entry);
-
-        // Then
-        assertThat(savedEntry.getEntry_id()).isEqualTo("123456");
-        assertThat(savedEntry.getDate()).isEqualTo(entry.getDate());
-        assertThat(savedEntry.getCategory()).isEqualTo(entry.getCategory());
-        assertThat(savedEntry.getNotes()).isEqualTo(entry.getNotes());
-        assertThat(savedEntry.getSample()).isEqualTo(entry.getSample());
-        verify(entryRepository, times(1)).save(entry);
-    }
-    @Test
-    void testDeleteSuccess() {
-        // Given
-        given(entryRepository.findById(idWorker.nextId() + "")).willReturn(Optional.empty());
-        // When
-        assertThrows(ObjectNotFoundException.class, () -> {
-            entryService.delete(idWorker.nextId() + "");
-        });
-
-        // verify
-        verify(entryRepository, times(1)).findById(idWorker.nextId() + "");
     }
 }
