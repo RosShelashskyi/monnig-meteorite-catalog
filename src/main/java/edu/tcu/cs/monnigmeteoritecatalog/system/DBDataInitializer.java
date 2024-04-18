@@ -2,6 +2,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.system;
 
 import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanService;
 import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.Curator;
 import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.CuratorRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
@@ -22,15 +23,15 @@ public class DBDataInitializer implements CommandLineRunner {
 
     private final EntryRepository entryRepository;
 
-    private final LoanRepository loanRepository;
+    private final LoanService loanService;
 
     private final IdWorker idWorker;
     private final CuratorRepository curatorRepository;
 
-    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, IdWorker idWorker, CuratorRepository curatorRepository) {
+    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, LoanService loanService, IdWorker idWorker, CuratorRepository curatorRepository) {
         this.sampleRepository = sampleRepository;
         this.entryRepository = entryRepository;
-        this.loanRepository = loanRepository1;
+        this.loanService = loanService;
         this.idWorker = idWorker;
         this.curatorRepository = curatorRepository;
     }
@@ -98,8 +99,8 @@ public class DBDataInitializer implements CommandLineRunner {
         l2.setLoan_notes("Rare meteorite, research project.");
         l2.setSamples_on_loan(Arrays.asList(s2));
 
-        this.loanRepository.save(l1);
-        this.loanRepository.save(l2);
+        this.loanService.save(l1);
+        this.loanService.save(l2);
 
         Curator curator = new Curator();
         curator.setUsername("carsonfreeman");

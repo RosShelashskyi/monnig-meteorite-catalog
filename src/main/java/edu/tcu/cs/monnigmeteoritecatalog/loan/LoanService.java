@@ -1,6 +1,7 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
 
+import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,10 @@ public class LoanService {
 
     public Loan save(Loan newLoan){
         newLoan.setLoan_ID(idWorker.nextId() + "");
+        //add the loan to each sample's loan list
+        for(Sample sample : newLoan.getSamples_on_loan()){
+            sample.addLoan(newLoan);
+        }
         return this.loanRepository.save(newLoan);
     }
 

@@ -1,5 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import jakarta.persistence.*;
 
 import java.io.File;
@@ -42,6 +43,9 @@ public class Sample implements Serializable {
     // Hold the sample history for this sample
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "sample")
     private List<Entry> sample_history = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    private List<Loan> loans = new ArrayList<>();
 
     public Sample() {
     }
@@ -250,4 +254,15 @@ public class Sample implements Serializable {
         this.sample_history = sample_history;
     }
 
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public void addLoan(Loan loan){
+        this.loans.add(loan);
+    }
 }
