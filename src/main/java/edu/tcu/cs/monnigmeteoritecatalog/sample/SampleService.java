@@ -82,6 +82,7 @@ public class SampleService {
         Sample sampleToBeDeleted = this.sampleRepository.findById(sampleId)
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
         List<Entry> history = sampleToBeDeleted.getSample_history();
+        sampleToBeDeleted.removeHistoryEntry();
         history.forEach(entry -> this.entryService.delete(entry.getEntry_id()));
         this.sampleRepository.deleteById(sampleId);
     }
