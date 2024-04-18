@@ -1,9 +1,7 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.security.Timestamp;
 import java.io.Serializable;
@@ -15,7 +13,7 @@ public class Loan implements Serializable {
     @Id
     private String loan_ID;
 
-    @OneToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Sample> samples_on_loan;
 
     private String loanee_name;
