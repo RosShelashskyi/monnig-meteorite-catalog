@@ -1,5 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import jakarta.transaction.Transactional;
@@ -62,6 +63,11 @@ public class SampleService {
                     oldSample.setExternal_resources(update.getExternal_resources());
                     oldSample.setImages(update.getImages());
                     oldSample.setAdditional_class_info(update.getAdditional_class_info());
+                    oldSample.removeAllLoans();
+                    oldSample.setLoans(update.getLoans());
+                    for(Loan loan : oldSample.getLoans()){
+                        loan.addSample(oldSample);
+                    }
                     //not including history in this since history is meant to track updates
                     //and it doesn't make sense to update history with this api call
                     return this.sampleRepository.save(oldSample);
@@ -69,8 +75,9 @@ public class SampleService {
     }
 
     public void delete(String sampleId){
-        this.sampleRepository.findById(sampleId)
+        Sample sample = this.sampleRepository.findById(sampleId)
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
+        sample.removeAllLoans();
         this.sampleRepository.deleteById(sampleId);
     }
 }

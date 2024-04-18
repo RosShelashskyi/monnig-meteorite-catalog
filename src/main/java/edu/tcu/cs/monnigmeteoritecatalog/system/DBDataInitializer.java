@@ -2,6 +2,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.system;
 
 import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanService;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
@@ -17,11 +18,14 @@ public class DBDataInitializer implements CommandLineRunner {
 
     private final LoanRepository loanRepository;
 
+    private final LoanService loanService;
+
     private final IdWorker idWorker;
 
-    public DBDataInitializer(SampleRepository sampleRepository, LoanRepository loanRepository, IdWorker idWorker) {
+    public DBDataInitializer(SampleRepository sampleRepository, LoanRepository loanRepository, LoanService loanService, IdWorker idWorker) {
         this.sampleRepository = sampleRepository;
         this.loanRepository = loanRepository;
+        this.loanService = loanService;
         this.idWorker = idWorker;
     }
 
@@ -72,7 +76,7 @@ public class DBDataInitializer implements CommandLineRunner {
         l2.setLoan_notes("Rare meteorite, research project.");
         l2.setSamples_on_loan(Arrays.asList(s2));
 
-        loanRepository.save(l1);
-        loanRepository.save(l2);
+        loanService.save(l1);
+        loanService.save(l2);
     }
 }
