@@ -237,6 +237,10 @@ public class Sample implements Serializable {
         historyEntry.setSample(this);
         this.sample_history.add(historyEntry);
     }
+    public void removeHistoryEntry() {
+        this.sample_history.forEach(entry -> entry.setSample(null));
+        this.sample_history = new ArrayList<>();
+    }
 
     public Integer getSampleHistorySize() {
         return this.sample_history.size();

@@ -2,6 +2,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryService;
 import edu.tcu.cs.monnigmeteoritecatalog.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import jakarta.transaction.Transactional;
@@ -18,11 +19,14 @@ public class SampleService {
 
     private final EntryRepository entryRepository;
 
+    private final EntryService entryService;
 
-    public SampleService(SampleRepository sampleRepository, IdWorker idWorker, EntryRepository entryRepository) {
+
+    public SampleService(SampleRepository sampleRepository, IdWorker idWorker, EntryRepository entryRepository, EntryService entryService) {
         this.sampleRepository = sampleRepository;
         this.idWorker = idWorker;
         this.entryRepository = entryRepository;
+        this.entryService = entryService;
     }
 
     //function for internal use for finding samples by internal ids
@@ -75,8 +79,10 @@ public class SampleService {
     }
 
     public void delete(String sampleId){
-        this.sampleRepository.findById(sampleId)
+        Sample sampleToBeDeleted = this.sampleRepository.findById(sampleId)
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
+        List<Entry> history = sampleToBeDeleted.getSample_history();
+        history.forEach(entry -> this.entryService.delete(entry.getEntry_id()));
         this.sampleRepository.deleteById(sampleId);
     }
 
