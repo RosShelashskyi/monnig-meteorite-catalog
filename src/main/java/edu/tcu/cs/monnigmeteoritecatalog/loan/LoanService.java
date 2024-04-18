@@ -37,6 +37,8 @@ public class LoanService {
     public Loan update(String loanId, Loan update){
         return this.loanRepository.findById(loanId)
                 .map(oldLoan -> {
+                    oldLoan.removeAllSamples();
+                    
                     oldLoan.setSamples_on_loan(update.getSamples_on_loan());
                     oldLoan.setLoanee_name(update.getLoanee_name());
                     oldLoan.setLoanee_email(update.getLoanee_email());

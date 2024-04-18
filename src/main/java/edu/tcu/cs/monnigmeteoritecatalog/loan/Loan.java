@@ -1,13 +1,11 @@
 package edu.tcu.cs.monnigmeteoritecatalog.loan;
 
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.security.Timestamp;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,8 +14,8 @@ public class Loan implements Serializable {
     @Id
     private String loan_ID;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Sample> samples_on_loan;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Sample> samples_on_loan = new ArrayList<>();
 
     private String loanee_name;
     private String loanee_email;
@@ -101,5 +99,19 @@ public class Loan implements Serializable {
 
     public void setLoan_notes(String loan_notes) {
         this.loan_notes = loan_notes;
+    }
+
+    public void addSample(Sample sample){
+        this.samples_on_loan.add(sample);
+    }
+
+    public void removeSample(Sample sample){
+        sample.removeLoan(this);
+        this.samples_on_loan.remove(sample);
+    }
+
+    public void removeAllSamples(){
+        this.samples_on_loan.stream().forEach(sample -> sample.removeLoan(this));
+        this.samples_on_loan = new ArrayList<>();
     }
 }

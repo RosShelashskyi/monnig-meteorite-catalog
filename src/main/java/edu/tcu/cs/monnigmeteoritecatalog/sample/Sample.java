@@ -1,9 +1,11 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import jakarta.persistence.*;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 //class for representing meteorite samples
@@ -36,6 +38,9 @@ public class Sample implements Serializable {
     @ElementCollection
     private List<File> images;
     private String additional_class_info;
+
+    @ManyToMany
+    private List<Loan> loans = new ArrayList<>();
 
 //    @OneToMany
 //    private List<SampleHistory> history;
@@ -227,7 +232,28 @@ public class Sample implements Serializable {
         this.additional_class_info = additional_class_info;
     }
 
-//    public List<SampleHistory> getHistory() {
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public void addLoan(Loan loan){
+        this.loans.add(loan);
+    }
+
+    public void removeLoan(Loan loan){
+        this.loans.remove(loan);
+    }
+
+    public void removeAllLoans(){
+        this.loans.stream().forEach(loan -> loan.removeSample(this));
+        this.loans = new ArrayList<>();
+    }
+
+    //    public List<SampleHistory> getHistory() {
 //        return history;
 //    }
 //
