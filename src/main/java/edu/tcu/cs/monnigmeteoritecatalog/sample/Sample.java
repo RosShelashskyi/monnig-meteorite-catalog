@@ -40,7 +40,7 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Loan> loans = new ArrayList<>();
 
 //    @OneToMany

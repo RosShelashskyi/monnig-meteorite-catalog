@@ -77,7 +77,7 @@ public class SampleService {
     public void delete(String sampleId){
         Sample sample = this.sampleRepository.findById(sampleId)
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
-        sample.removeAllLoans();
+        //sample.removeAllLoans();
         this.sampleRepository.deleteById(sampleId);
     }
 }

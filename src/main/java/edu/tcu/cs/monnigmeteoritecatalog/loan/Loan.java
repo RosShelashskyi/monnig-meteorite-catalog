@@ -14,7 +14,7 @@ public class Loan implements Serializable {
     @Id
     private String loan_ID;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Sample> samples_on_loan = new ArrayList<>();
 
     private String loanee_name;
