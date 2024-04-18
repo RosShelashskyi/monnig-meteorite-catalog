@@ -4,10 +4,13 @@ import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
+import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component
@@ -15,13 +18,16 @@ public class DBDataInitializer implements CommandLineRunner {
 
     private final SampleRepository sampleRepository;
 
+    private final EntryRepository entryRepository;
+
     private final LoanRepository loanRepository;
 
     private final IdWorker idWorker;
 
-    public DBDataInitializer(SampleRepository sampleRepository, LoanRepository loanRepository, IdWorker idWorker) {
+    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, IdWorker idWorker) {
         this.sampleRepository = sampleRepository;
-        this.loanRepository = loanRepository;
+        this.entryRepository = entryRepository;
+        this.loanRepository = loanRepository1;
         this.idWorker = idWorker;
     }
 
@@ -47,8 +53,25 @@ public class DBDataInitializer implements CommandLineRunner {
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
-        sampleRepository.save(s1);
-        sampleRepository.save(s2);
+        // Entries
+        Entry entry1 = new Entry();
+        entry1.setEntry_id(idWorker.nextId() + "");
+        entry1.setDate("11/1/2023");
+        entry1.setCategory("Created");
+        entry1.setNotes("Migrated from Old Monnig Database");
+
+
+        Entry entry2 = new Entry();
+        entry2.setEntry_id(idWorker.nextId() + "");
+        entry2.setDate("12/5/2023");
+        entry2.setCategory("Cut");
+        entry2.setNotes("Cut into three subsamples");
+
+        s1.addHistoryEntry(entry1);
+        s2.addHistoryEntry(entry2);
+
+        this.sampleRepository.save(s1);
+        this.sampleRepository.save(s2);
 
         Loan l1 = new Loan();
         l1.setLoan_ID(idWorker.nextId() + "");
@@ -74,5 +97,6 @@ public class DBDataInitializer implements CommandLineRunner {
 
         loanRepository.save(l1);
         loanRepository.save(l2);
+
     }
 }
