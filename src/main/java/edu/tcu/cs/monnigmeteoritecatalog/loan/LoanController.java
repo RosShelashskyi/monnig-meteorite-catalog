@@ -45,6 +45,7 @@ public class LoanController {
     @PostMapping
     public Result addLoan(@Valid @RequestBody LoanDto loanDto){
         Loan newLoan = this.loanDtoToLoanConverter.convert(loanDto);
+        assert newLoan != null;
         Loan savedLoan = this.loanService.save(newLoan);
         LoanDto savedLoanDto = this.loanToLoanDtoConverter.convert(savedLoan);
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedLoanDto);

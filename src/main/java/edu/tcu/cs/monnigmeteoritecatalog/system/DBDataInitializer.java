@@ -2,6 +2,8 @@ package edu.tcu.cs.monnigmeteoritecatalog.system;
 
 import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.Curator;
+import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.CuratorRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
@@ -23,12 +25,14 @@ public class DBDataInitializer implements CommandLineRunner {
     private final LoanRepository loanRepository;
 
     private final IdWorker idWorker;
+    private final CuratorRepository curatorRepository;
 
-    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, IdWorker idWorker) {
+    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, IdWorker idWorker, CuratorRepository curatorRepository) {
         this.sampleRepository = sampleRepository;
         this.entryRepository = entryRepository;
         this.loanRepository = loanRepository1;
         this.idWorker = idWorker;
+        this.curatorRepository = curatorRepository;
     }
 
     @Override
@@ -59,7 +63,6 @@ public class DBDataInitializer implements CommandLineRunner {
         entry1.setDate("11/1/2023");
         entry1.setCategory("Created");
         entry1.setNotes("Migrated from Old Monnig Database");
-
 
         Entry entry2 = new Entry();
         entry2.setEntry_id(idWorker.nextId() + "");
@@ -95,8 +98,15 @@ public class DBDataInitializer implements CommandLineRunner {
         l2.setLoan_notes("Rare meteorite, research project.");
         l2.setSamples_on_loan(Arrays.asList(s2));
 
-        loanRepository.save(l1);
-        loanRepository.save(l2);
+        this.loanRepository.save(l1);
+        this.loanRepository.save(l2);
+
+        Curator curator = new Curator();
+        curator.setUsername("carsonfreeman");
+        curator.setPassword("12345");
+        curator.setEnabled(false);
+        curator.setRoles("admin");
+        curatorRepository.save(curator);
 
     }
 }
