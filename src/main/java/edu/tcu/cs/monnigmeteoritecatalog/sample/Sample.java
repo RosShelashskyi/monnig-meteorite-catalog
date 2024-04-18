@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 //class for representing meteorite samples
@@ -249,7 +250,8 @@ public class Sample implements Serializable {
     }
 
     public void removeAllLoans(){
-        this.loans.stream().forEach(loan -> loan.removeSample(this));
+        List<Loan> temp = this.loans;
+        temp.stream().forEach(loan -> loan.removeSample(this));
         this.loans = new ArrayList<>();
     }
 

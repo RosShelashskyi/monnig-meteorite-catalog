@@ -119,7 +119,7 @@ public class SampleControllerTest {
     @Test
     void testAddSampleSuccess() throws Exception{
         // Given
-        SampleDto sampleDto = new SampleDto(null, "Abernathy", "M239.1", "USA", "Ordinary Chondrite", "L", "1941", (float)453.1, null);
+        SampleDto sampleDto = new SampleDto(null, "Abernathy", "M239.1", "USA", "Ordinary Chondrite", "L", "1941", (float)453.1);
         String json = this.objectMapper.writeValueAsString(sampleDto);
 
         Sample savedSample = new Sample();
@@ -150,7 +150,7 @@ public class SampleControllerTest {
     }
     @Test
     void testUpdateSampleSuccess() throws Exception {
-        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1, null);
+        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1);
         String json = this.objectMapper.writeValueAsString(sampleDto);
         Sample updatedSample = new Sample();
         updatedSample.setSample_ID("0001");
@@ -182,7 +182,7 @@ public class SampleControllerTest {
     }
     @Test
     void testUpdateSampleErrorWithNonExistentId() throws Exception {
-        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1, null);
+        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1);
         String json = this.objectMapper.writeValueAsString(sampleDto);
 
         // Given

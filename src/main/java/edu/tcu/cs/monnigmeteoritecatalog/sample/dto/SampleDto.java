@@ -14,6 +14,5 @@ public record SampleDto(String id,
                         @NotEmpty(message = "class is required") String sample_class,
                         @NotEmpty(message = "group is required") String group,
                         @NotEmpty(message = "year found is required") String date_found_year,
-                        @NotNull(message = "sample weight is required") Float sample_weight_g,
-                        List<Loan> loans){
+                        @NotNull(message = "sample weight is required") Float sample_weight_g){
 }

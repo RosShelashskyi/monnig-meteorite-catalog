@@ -19,7 +19,6 @@ public class SampleDtoToSampleConverter implements Converter<SampleDto, Sample> 
         sample.setSample_group(source.group());
         sample.setDate_found_year(source.date_found_year());
         sample.setSample_weight_g(source.sample_weight_g());
-        sample.setLoans(source.loans());
         return sample;
     }
 }
