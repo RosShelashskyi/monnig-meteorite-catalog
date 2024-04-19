@@ -1,5 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.samplehistory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import jakarta.persistence.*;
 
@@ -17,6 +18,7 @@ public class Entry implements Serializable {
     private String category;
     private String notes;
     // Sample
+    @JsonIgnore
     @ManyToOne
     private Sample sample;
 

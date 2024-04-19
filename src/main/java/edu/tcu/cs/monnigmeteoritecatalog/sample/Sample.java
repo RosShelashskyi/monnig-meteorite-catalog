@@ -1,5 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import jakarta.persistence.*;
 
@@ -44,6 +45,7 @@ public class Sample implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "sample")
     private List<Entry> sample_history = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL})
     private List<Loan> loans = new ArrayList<>();
 
