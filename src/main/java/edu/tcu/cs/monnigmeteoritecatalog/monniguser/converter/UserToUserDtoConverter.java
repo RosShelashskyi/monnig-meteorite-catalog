@@ -9,6 +9,6 @@ import org.springframework.core.convert.converter.Converter;
 public class UserToUserDtoConverter implements Converter<MonnigUser, UserDto> {
     @Override
     public UserDto convert(MonnigUser source) {
-        return new UserDto(source.getId(), source.getUsername(), source.isEnabled(), source.getPassword(), source.getRoles());
+        return new UserDto(source.getId(), source.getUsername(), source.isEnabled(), source.getRoles());
     }
 }
