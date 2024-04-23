@@ -80,12 +80,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/create").hasAuthority("ROLE_admin") // only the curator can create a loan
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/loan/update").hasAuthority("ROLE_admin") // only the curator can update a loan
                         // view all samples on loan
-                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/**").hasAuthority("ROLE_admin") // only the admin can login
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/add").hasAuthority("ROLE_admin") // only the admin can login
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/login").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(Customizer.withDefaults()).disable()) // This is for H2 browser console access.
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.customBasicAuthenticationEntryPoint))
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(this.customBearerTokenAuthenticationEntryPoint)
