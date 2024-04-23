@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/samples")
+@RequestMapping("${api.endpoint.base-url}/samples")
 public class SampleController {
     private final SampleService sampleService;
 
@@ -43,22 +43,21 @@ public class SampleController {
         this.sampleRepository = sampleRepository;
         this.entryService = entryService;
     }
-    @GetMapping("/{sampleId}")
+    @GetMapping("/view/{sampleId}")
     public Result findSampleById(@PathVariable String sampleId) {
         Sample foundSample = this.sampleService.findById(sampleId);
         SampleDto sampleDto = this.sampleToSampleDtoConverter.convert(foundSample);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", sampleDto);
     }
-    @GetMapping
+    @GetMapping("/all")
     public Result findAllSamples() {
         List<Sample> foundSamples = this.sampleService.findAll();
-
         List<SampleDto> sampleDtos = foundSamples.stream()
                 .map(this.sampleToSampleDtoConverter::convert)
                 .toList();
         return new Result(true, StatusCode.SUCCESS, "Find All Success", sampleDtos);
     }
-    @PostMapping
+    @PostMapping("/add")
     public Result addSample(@Valid @RequestBody SampleDto sampleDto){
         Sample newSample = this.sampleDtoToSampleConverter.convert(sampleDto);
         assert newSample != null;
@@ -68,7 +67,7 @@ public class SampleController {
 
     }
 
-    @PutMapping("/{sampleId}")
+    @PutMapping("/update/{sampleId}")
     public Result updateSample(@PathVariable String sampleId, @Valid @RequestBody SampleDto sampleDto){
         Sample update = this.sampleDtoToSampleConverter.convert(sampleDto);
         Sample updatedSample = this.sampleService.update(sampleId, update);
@@ -76,12 +75,12 @@ public class SampleController {
         return new Result(true, StatusCode.SUCCESS, "Update Success", updatedSampleDto);
     }
 
-    @DeleteMapping("/{sampleId}")
+    @DeleteMapping("/delete/{sampleId}")
     public Result deleteSample(@PathVariable String sampleId){
         this.sampleService.delete(sampleId);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
     }
-    @GetMapping("/history/{sampleId}")
+    @GetMapping("/history/all/{sampleId}")
     public Result findSampleHistory(@PathVariable String sampleId) {
         Sample sample = this.sampleService.findById(sampleId);
         List<Entry> sampleHistory = sample.getSample_history();
@@ -90,7 +89,7 @@ public class SampleController {
                 .toList();
         return new Result(true, StatusCode.SUCCESS, "Found History", sampleHistoryDto);
     }
-    @PostMapping("/history/{sampleId}")
+    @PostMapping("/history/add/{sampleId}")
     public Result addEntry(@PathVariable String sampleId, @Valid @RequestBody EntryDto entryDto){
         Sample sample = this.sampleRepository.findById(sampleId).orElseThrow(() -> new ObjectNotFoundException("sample", sampleId)); // owner
         Entry newEntry = this.entryDtoToEntryConverter.convert(entryDto); // get the new entry

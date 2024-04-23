@@ -1,4 +1,4 @@
-package edu.tcu.cs.monnigmeteoritecatalog.monnigcurator;
+package edu.tcu.cs.monnigmeteoritecatalog.monniguser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
-public class Curator implements Serializable {
+public class MonnigUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +24,7 @@ public class Curator implements Serializable {
     private String roles;
 
 
-    public Curator(){
+    public MonnigUser(){
 
     }
 

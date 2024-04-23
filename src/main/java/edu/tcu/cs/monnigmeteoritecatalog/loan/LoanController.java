@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/loan")
+@RequestMapping("${api.endpoint.base-url}/loan")
 public class LoanController {
     private final LoanService loanService;
 
@@ -26,14 +26,14 @@ public class LoanController {
         this.loanDtoToLoanConverter = loanDtoToLoanConverter;
     }
 
-    @GetMapping("/{loanId}")
+    @GetMapping("/view/{loanId}")
     public Result findLoanById(@PathVariable String loanId){
         Loan foundLoan = this.loanService.findById(loanId);
         LoanDto loanDto = this.loanToLoanDtoConverter.convert(foundLoan);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", loanDto);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public Result findAllLoans(){
         List<Loan> foundLoans = this.loanService.findAll();
         List<LoanDto> loanDtos = foundLoans.stream()
@@ -42,7 +42,7 @@ public class LoanController {
         return new Result(true, StatusCode.SUCCESS, "Find All Success", loanDtos);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Result addLoan(@Valid @RequestBody LoanDto loanDto){
         Loan newLoan = this.loanDtoToLoanConverter.convert(loanDto);
         assert newLoan != null;
@@ -51,7 +51,7 @@ public class LoanController {
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedLoanDto);
     }
 
-    @PutMapping("/{loanId}")
+    @PutMapping("/update/{loanId}")
     public Result updateLoan(@PathVariable String loanId, @Valid @RequestBody LoanDto loanDto) {
         Loan update = this.loanDtoToLoanConverter.convert(loanDto);
         Loan updatedLoan = this.loanService.update(loanId, update);
