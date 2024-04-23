@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/history")
+@RequestMapping("${api.endpoint.base-url}/history")
 public class EntryController {
 
     private final EntryService entryService;
@@ -33,7 +33,7 @@ public class EntryController {
         EntryDto entryDto = this.entryToEntryDtoConverter.convert(foundEntry);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", entryDto);
     }
-    @GetMapping
+    @GetMapping("")
     public Result findAllEntries() {
         List<Entry> foundEntries = this.entryService.findAll();
         List<EntryDto> entryDtos = foundEntries.stream()
@@ -50,7 +50,7 @@ public class EntryController {
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedEntryDto);
     }
     // Update entry ?
-    @DeleteMapping("/{entry_id}")
+    @DeleteMapping("/delete/{entry_id}")
     public Result deleteEntry(@PathVariable String entry_id) {
         this.entryService.delete(entry_id);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");

@@ -3,8 +3,9 @@ package edu.tcu.cs.monnigmeteoritecatalog.system;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.loan.LoanService;
-import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.Curator;
-import edu.tcu.cs.monnigmeteoritecatalog.monnigcurator.CuratorRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.monniguser.MonnigUser;
+import edu.tcu.cs.monnigmeteoritecatalog.monniguser.UserRepository;
+import edu.tcu.cs.monnigmeteoritecatalog.monniguser.UserService;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.Sample;
 import edu.tcu.cs.monnigmeteoritecatalog.sample.SampleRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
@@ -13,7 +14,6 @@ import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component
@@ -26,14 +26,16 @@ public class DBDataInitializer implements CommandLineRunner {
     private final LoanService loanService;
 
     private final IdWorker idWorker;
-    private final CuratorRepository curatorRepository;
 
-    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, LoanService loanService, IdWorker idWorker, CuratorRepository curatorRepository) {
+    private final UserService userService;
+
+
+    public DBDataInitializer(SampleRepository sampleRepository, EntryRepository entryRepository, LoanRepository loanRepository, LoanRepository loanRepository1, LoanService loanService, IdWorker idWorker, UserRepository userRepository, UserService userService) {
         this.sampleRepository = sampleRepository;
         this.entryRepository = entryRepository;
         this.loanService = loanService;
         this.idWorker = idWorker;
-        this.curatorRepository = curatorRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -102,12 +104,12 @@ public class DBDataInitializer implements CommandLineRunner {
         this.loanService.save(l1);
         this.loanService.save(l2);
 
-        Curator curator = new Curator();
-        curator.setUsername("carsonfreeman");
-        curator.setPassword("12345");
-        curator.setEnabled(false);
-        curator.setRoles("admin");
-        curatorRepository.save(curator);
+        MonnigUser monnigUser = new MonnigUser();
+        monnigUser.setUsername("carsonfreeman");
+        monnigUser.setPassword("12345");
+        monnigUser.setEnabled(true);
+        monnigUser.setRoles("admin");
+        this.userService.save(monnigUser);
 
     }
 }
