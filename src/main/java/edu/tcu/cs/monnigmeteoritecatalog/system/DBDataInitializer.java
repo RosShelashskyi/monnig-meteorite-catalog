@@ -109,7 +109,15 @@ public class DBDataInitializer implements CommandLineRunner {
         monnigUser.setPassword("12345");
         monnigUser.setEnabled(true);
         monnigUser.setRoles("admin");
+
+        MonnigUser monnigUser2 = new MonnigUser();
+        monnigUser2.setUsername("guest");
+        monnigUser2.setPassword("");
+        monnigUser2.setEnabled(true);
+        monnigUser2.setRoles("user");
+
         this.userService.save(monnigUser);
+        this.userService.save(monnigUser2);
 
     }
 }
