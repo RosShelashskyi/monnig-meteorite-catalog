@@ -12,8 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,12 +23,12 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+
 @Configuration
 public class SecurityConfiguration {
 
@@ -71,17 +69,17 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/samples/update/**").hasAuthority("ROLE_admin") // only the curator can update a meteorite
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/samples/delete/**").hasAuthority("ROLE_admin") // only the curator can delete a meteorite
                         // add sub-sample
-                        // view related samples
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/view/related/**").hasAuthority("ROLE_admin") // only the curator can view related samples
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/history/all/**").hasAuthority("ROLE_admin") // only the curator can see sample history
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/history/delete/**").hasAuthority("ROLE_admin") // only the curator can delete a history entry
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/loan/all").hasAuthority("ROLE_admin") // only the curator can view all loans
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/loan/view/**").hasAuthority("ROLE_admin") // only the curator can view a specific loan
-                        // archive a loan
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/archive/**").hasAuthority("ROLE_admin") // only the curator can archive a loan
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/create").hasAuthority("ROLE_admin") // only the curator can create a loan
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/loan/update").hasAuthority("ROLE_admin") // only the curator can update a loan
                         // view all samples on loan
-                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/add").hasAuthority("ROLE_admin") // only the admin can login
-                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/add").hasAuthority("ROLE_admin") // only the admin can add users
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/login").permitAll() // guests can login
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated()
                 )

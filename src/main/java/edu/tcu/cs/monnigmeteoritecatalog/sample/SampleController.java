@@ -49,6 +49,16 @@ public class SampleController {
         SampleDto sampleDto = this.sampleToSampleDtoConverter.convert(foundSample);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", sampleDto);
     }
+    @GetMapping("/view/related/{sampleId}")
+    public Result findRelatedSamplesById(@PathVariable String sampleId) {
+        Sample sample = this.sampleService.findById(sampleId); // main sample we are looking for relations
+        String majorMonnig = sample.getMonnig_number().substring(0, sample.getMonnig_number().indexOf('.')); // this should reformat the M123.1 -> M123
+        List<Sample> foundSamples = this.sampleRepository.findByMonnigMajorNum(majorMonnig);
+        List<SampleDto> foundSampleDtos = foundSamples.stream()
+                .map(this.sampleToSampleDtoConverter::convert)
+                .toList();
+        return new Result(true, StatusCode.SUCCESS, "Find related samples success", foundSampleDtos);
+    }
     @GetMapping("/all")
     public Result findAllSamples() {
         List<Sample> foundSamples = this.sampleService.findAll();
@@ -99,6 +109,13 @@ public class SampleController {
         EntryDto savedEntryDto = this.entryToEntryDtoConverter.convert(savedEntry);
         return new Result(true, StatusCode.SUCCESS, "Entry Created", savedEntryDto);
     }
+//    @PostMapping("/subsample/{sampleId}")
+//    public Result addSubsample(@PathVariable String sampleId, @Valid @RequestBody SampleDto sampleDto){
+//        Sample sample = this.sampleDtoToSampleConverter.convert(sampleDto);
+//        Sample newSubSample = this.sampleService.subsample(sampleId, sample);
+//        SampleDto newSubSampleDto = this.sampleToSampleDtoConverter.convert(newSubSample);
+//        return new Result(true, StatusCode.SUCCESS, "Subsample Created", newSubSampleDto);
+//    }
 
 
 }

@@ -80,7 +80,6 @@ public class DBDataInitializer implements CommandLineRunner {
         this.sampleRepository.save(s2);
 
         Loan l1 = new Loan();
-        l1.setLoan_ID(idWorker.nextId() + "");
         l1.setLoanee_name("John Doe");
         l1.setLoanee_email("johndoe@example.com");
         l1.setLoanee_institution("Meteorite Research Institute");
@@ -88,10 +87,8 @@ public class DBDataInitializer implements CommandLineRunner {
         l1.setLoan_start_date("2024-04-01 10:00:00");
         l1.setLoan_due_date("2024-04-15 10:00:00");
         l1.setLoan_notes("Fragile meteorite, handle with care.");
-        l1.setSamples_on_loan(Arrays.asList(s1));
 
         Loan l2 = new Loan();
-        l2.setLoan_ID(idWorker.nextId() + "");
         l2.setLoanee_name("Jane Smith");
         l2.setLoanee_email("janesmith@example.com");
         l2.setLoanee_institution("Space Exploration Society");
@@ -99,7 +96,6 @@ public class DBDataInitializer implements CommandLineRunner {
         l2.setLoan_start_date("2024-03-20 09:30:00");
         l2.setLoan_due_date("2024-04-10 09:30:00");
         l2.setLoan_notes("Rare meteorite, research project.");
-        l2.setSamples_on_loan(Arrays.asList(s2));
 
         this.loanService.save(l1);
         this.loanService.save(l2);

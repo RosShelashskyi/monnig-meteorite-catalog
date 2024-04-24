@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class SampleControllerTest {
 
     @Autowired
@@ -53,6 +53,7 @@ public class SampleControllerTest {
         s1.setSample_group("H");
         s1.setDate_found_year("1951");
         s1.setSample_weight_g((float)325.1);
+        s1.setLoan(null);
 
         Sample s2 = new Sample();
         s2.setSample_ID("0002");
@@ -63,7 +64,7 @@ public class SampleControllerTest {
         s2.setSample_group("EH");
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
-
+        s2.setLoan(null);
         this.samples = new ArrayList<>();
         this.samples.add(s1);
         this.samples.add(s2);
@@ -77,7 +78,7 @@ public class SampleControllerTest {
         // Given
         given(this.sampleService.findById("0001")).willReturn(this.samples.getFirst());
         // When and then
-        this.mockMvc.perform(get("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/samples/view/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find One Success"))
@@ -95,7 +96,7 @@ public class SampleControllerTest {
         //Given
         given(this.sampleService.findById("0001")).willThrow(new ObjectNotFoundException("sample", "0001"));
         // When and then
-        this.mockMvc.perform(get("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/samples/view/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))
@@ -107,7 +108,7 @@ public class SampleControllerTest {
         // Given
         given(this.sampleService.findAll()).willReturn(this.samples);
         // When and then
-        this.mockMvc.perform(get("/api/samples").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/samples/all").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find All Success"))
@@ -120,7 +121,7 @@ public class SampleControllerTest {
     @Test
     void testAddSampleSuccess() throws Exception{
         // Given
-        SampleDto sampleDto = new SampleDto(null, "Abernathy", "M239.1", "USA", "Ordinary Chondrite", "L", "1941", (float)453.1);
+        SampleDto sampleDto = new SampleDto(null, "Abernathy", "M239.1", "USA", "Ordinary Chondrite", "L", "1941", (float)453.1, null);
         String json = this.objectMapper.writeValueAsString(sampleDto);
 
         Sample savedSample = new Sample();
@@ -132,11 +133,12 @@ public class SampleControllerTest {
         savedSample.setSample_group("L");
         savedSample.setDate_found_year("1941");
         savedSample.setSample_weight_g((float)453.1);
+        savedSample.setLoan(null);
 
         given(this.sampleService.save(Mockito.any(Sample.class))).willReturn(savedSample);
 
         // When and then
-        this.mockMvc.perform(post("/api/samples").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(post("/api/samples/add").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Add Success"))
@@ -151,7 +153,7 @@ public class SampleControllerTest {
     }
     @Test
     void testUpdateSampleSuccess() throws Exception {
-        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1);
+        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1, null);
         String json = this.objectMapper.writeValueAsString(sampleDto);
         Sample updatedSample = new Sample();
         updatedSample.setSample_ID("0001");
@@ -168,7 +170,7 @@ public class SampleControllerTest {
         given(this.sampleService.update(eq("0001"), Mockito.any(Sample.class))).willReturn(updatedSample);
 
         // When and then
-        this.mockMvc.perform(put("/api/samples/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/samples/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Update Success"))
@@ -183,14 +185,14 @@ public class SampleControllerTest {
     }
     @Test
     void testUpdateSampleErrorWithNonExistentId() throws Exception {
-        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1);
+        SampleDto sampleDto = new SampleDto("0001", "Abbott", "New Monnig Num", "USA", "Ordinary Chondrite", "H", "1951", (float)325.1, null);
         String json = this.objectMapper.writeValueAsString(sampleDto);
 
         // Given
         given(this.sampleService.update(eq("0001"), Mockito.any(Sample.class))).willThrow(new ObjectNotFoundException("sample", "0001"));
 
         // When and then
-        this.mockMvc.perform(put("/api/samples/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/samples/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))
@@ -200,7 +202,7 @@ public class SampleControllerTest {
     void testDeleteSampleSuccess() throws Exception {
         doNothing().when(this.sampleService).delete("0001");
 
-        this.mockMvc.perform(delete("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(delete("/api/samples/delete/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Delete Success"))
@@ -209,7 +211,7 @@ public class SampleControllerTest {
     @Test
     void testDeleteSampleErrorWithNonExistentId() throws Exception {
         doThrow(new ObjectNotFoundException("sample", "0001")).when(this.sampleService).delete("0001");
-        this.mockMvc.perform(delete("/api/samples/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(delete("/api/samples/delete/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find sample with Id 0001"))

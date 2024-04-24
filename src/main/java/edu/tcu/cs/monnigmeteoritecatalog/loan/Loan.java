@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.security.Timestamp;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,9 +14,6 @@ public class Loan implements Serializable {
     @Id
     private String loan_ID;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private List<Sample> samples_on_loan;
-
     private String loanee_name;
     private String loanee_email;
     private String loanee_institution;
@@ -23,6 +21,13 @@ public class Loan implements Serializable {
     private String loan_start_date;
     private String loan_due_date;
     private String loan_notes;
+    private boolean isArchived;
+
+    // holds the Monnig numbers of samples under a specific loan
+    @ElementCollection
+    private List<String> samples_on_loan = new ArrayList<>();
+
+
 
     public Loan() {
 
@@ -34,14 +39,6 @@ public class Loan implements Serializable {
 
     public void setLoan_ID(String loan_ID) {
         this.loan_ID = loan_ID;
-    }
-
-    public List<Sample> getSamples_on_loan() {
-        return samples_on_loan;
-    }
-
-    public void setSamples_on_loan(List<Sample> samples_on_loan) {
-        this.samples_on_loan = samples_on_loan;
     }
 
     public String getLoanee_name() {
@@ -98,5 +95,32 @@ public class Loan implements Serializable {
 
     public void setLoan_notes(String loan_notes) {
         this.loan_notes = loan_notes;
+    }
+
+    public void removeAllSamplesFromLoan() {
+        this.samples_on_loan = new ArrayList<>();
+    }
+    // Remove a specific monnig number from the list
+    public void removeSampleFromLoan(String monnig_number) {
+        this.samples_on_loan.remove(monnig_number);
+    }
+
+    public List<String> getSamples_on_loan() {
+        return samples_on_loan;
+    }
+
+    public void setSamples_on_loan(List<String> samples_on_loan) {
+        this.samples_on_loan = samples_on_loan;
+    }
+    public void addSample(String monnig_number) {
+        samples_on_loan.add(monnig_number);
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
     }
 }

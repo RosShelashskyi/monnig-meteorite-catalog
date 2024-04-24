@@ -70,7 +70,6 @@ public class LoanServiceTest {
         l1.setLoan_start_date("2024-04-01 10:00:00");
         l1.setLoan_due_date("2024-04-15 10:00:00");
         l1.setLoan_notes("Fragile meteorite, handle with care.");
-        l1.setSamples_on_loan(Arrays.asList(s1));
 
         Loan l2 = new Loan();
         l2.setLoanee_name("Jane Smith");
@@ -80,7 +79,6 @@ public class LoanServiceTest {
         l2.setLoan_start_date("2024-03-20 09:30:00");
         l2.setLoan_due_date("2024-04-10 09:30:00");
         l2.setLoan_notes("Rare meteorite, research project.");
-        l2.setSamples_on_loan(Arrays.asList(s2));
 
         this.loans = new ArrayList<>();
         this.loans.add(l1);
@@ -112,7 +110,6 @@ public class LoanServiceTest {
         l.setLoan_start_date("2024-04-01 10:00:00");
         l.setLoan_due_date("2024-04-15 10:00:00");
         l.setLoan_notes("Fragile meteorite, handle with care.");
-        l.setSamples_on_loan(Arrays.asList(s));
 
         given(loanRepository.findById(l.getLoan_ID())).willReturn(Optional.of(l));
 
@@ -184,7 +181,6 @@ public class LoanServiceTest {
         l.setLoan_start_date("2024-04-01 10:00:00");
         l.setLoan_due_date("2024-04-15 10:00:00");
         l.setLoan_notes("Fragile meteorite, handle with care.");
-        l.setSamples_on_loan(Arrays.asList(s));
 
         given(idWorker.nextId()).willReturn(123456L);
         given(loanRepository.save(l)).willReturn(l);
@@ -237,7 +233,6 @@ public class LoanServiceTest {
         oldLoan.setLoan_start_date("2024-04-01 10:00:00");
         oldLoan.setLoan_due_date("2024-04-15 10:00:00");
         oldLoan.setLoan_notes("Fragile meteorite, handle with care.");
-        oldLoan.setSamples_on_loan(Arrays.asList(s1));
 
         Loan update = new Loan();
         update.setLoanee_name("Jane Smith");
@@ -247,7 +242,6 @@ public class LoanServiceTest {
         update.setLoan_start_date("2024-03-20 09:30:00");
         update.setLoan_due_date("2024-04-10 09:30:00");
         update.setLoan_notes("Rare meteorite, research project.");
-        update.setSamples_on_loan(Arrays.asList(s2));
 
         given(loanRepository.findById("1")).willReturn(Optional.of(oldLoan));
         given(loanRepository.save(oldLoan)).willReturn(oldLoan);
@@ -283,7 +277,6 @@ public class LoanServiceTest {
         l.setLoan_start_date("2024-04-01 10:00:00");
         l.setLoan_due_date("2024-04-15 10:00:00");
         l.setLoan_notes("Fragile meteorite, handle with care.");
-        l.setSamples_on_loan(Arrays.asList(s));
 
         given(loanRepository.findById("1")).willReturn(Optional.empty());
 
