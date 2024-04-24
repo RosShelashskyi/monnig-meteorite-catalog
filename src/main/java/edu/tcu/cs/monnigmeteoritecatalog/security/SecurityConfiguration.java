@@ -64,20 +64,19 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/view/**").permitAll() // all users can see all meteorites so permitAll
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/all/**").permitAll() // all users can view a specific meteorite so permitAll
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/samples/add").hasAuthority("ROLE_admin") // only curator can add a meteorite to database
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/samples/update/**").hasAuthority("ROLE_admin") // only the curator can update a meteorite
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/samples/delete/**").hasAuthority("ROLE_admin") // only the curator can delete a meteorite
                         // add sub-sample
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/view/related/**").hasAuthority("ROLE_admin") // only the curator can view related samples
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/history/all/**").hasAuthority("ROLE_admin") // only the curator can see sample history
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/related/**").hasAuthority("ROLE_admin") // only the curator can view related samples
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/samples/history/**").hasAuthority("ROLE_admin") // only the curator can see sample history
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/samples/history/**").hasAuthority("ROLE_admin") // only a curator can create a sample history entry
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/history/delete/**").hasAuthority("ROLE_admin") // only the curator can delete a history entry
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/loan/all").hasAuthority("ROLE_admin") // only the curator can view all loans
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/loan/view/**").hasAuthority("ROLE_admin") // only the curator can view a specific loan
-                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/archive/**").hasAuthority("ROLE_admin") // only the curator can archive a loan
-                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/create").hasAuthority("ROLE_admin") // only the curator can create a loan
-                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/loan/update").hasAuthority("ROLE_admin") // only the curator can update a loan
-                        // view all samples on loan
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/loan/**").hasAuthority("ROLE_admin") // only the curator can view all loans
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/loan/**").hasAuthority("ROLE_admin") // only the curator can archive a loan
+                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/loan/**").hasAuthority("ROLE_admin") // only the curator can update a loan
+                        .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/loan/**").hasAuthority("ROLE_admin") // only the curator can delete a loan
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users/all").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/add").hasAuthority("ROLE_admin") // only the admin can add users
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/users/login").permitAll() // guests can login
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()

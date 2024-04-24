@@ -14,6 +14,7 @@ import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,20 +27,14 @@ public class LoanController {
 
     private final LoanDtoToLoanConverter loanDtoToLoanConverter;
 
-    private final SampleToSampleDtoConverter sampleToSampleDtoConverter;
-
-    private final LoanRepository loanRepository;
-
     private final SampleRepository sampleRepository;
 
 
 
-    public LoanController(LoanService loanService, LoanToLoanDtoConverter loanToLoanDtoConverter, LoanDtoToLoanConverter loanDtoToLoanConverter, SampleToSampleDtoConverter sampleToSampleDtoConverter, LoanRepository loanRepository, SampleRepository sampleRepository) {
+    public LoanController(LoanService loanService, LoanToLoanDtoConverter loanToLoanDtoConverter, LoanDtoToLoanConverter loanDtoToLoanConverter, SampleRepository sampleRepository) {
         this.loanService = loanService;
         this.loanToLoanDtoConverter = loanToLoanDtoConverter;
         this.loanDtoToLoanConverter = loanDtoToLoanConverter;
-        this.sampleToSampleDtoConverter = sampleToSampleDtoConverter;
-        this.loanRepository = loanRepository;
         this.sampleRepository = sampleRepository;
     }
 
@@ -53,7 +48,13 @@ public class LoanController {
     @GetMapping("/all")
     public Result findAllLoans(){
         List<Loan> foundLoans = this.loanService.findAll();
-        List<LoanDto> loanDtos = foundLoans.stream()
+        List<Loan> nonArchivedLoans = new ArrayList<>();
+        for(Loan loan : foundLoans){
+            if(!loan.isArchived()) {
+                nonArchivedLoans.add(loan);
+            }
+        }
+        List<LoanDto> loanDtos = nonArchivedLoans.stream()
                 .map(this.loanToLoanDtoConverter::convert)
                 .collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All Success", loanDtos);
@@ -79,8 +80,15 @@ public class LoanController {
     public Result archiveLoan(@PathVariable String loanId) {
         Loan loan = this.loanService.findById(loanId);
         loan.setArchived(true);
-        Loan archivedLoan = this.loanService.update(loanId, loan);
+        this.loanService.update(loanId, loan);
         return new Result(true, StatusCode.SUCCESS, "Archive Success");
+    }
+    @PostMapping("/unarchive/{loanId}")
+    public Result unArchiveLoan(@PathVariable String loanId) {
+        Loan loan = this.loanService.findById(loanId);
+        loan.setArchived(false);
+        this.loanService.update(loanId, loan);
+        return new Result(true, StatusCode.SUCCESS, "Unarchive Success");
     }
     // Returns a list of the monnig numbers for samples that are on the loan
     @GetMapping("/sample/all/{loanId}")
@@ -101,5 +109,19 @@ public class LoanController {
         samples_on_loan.forEach(monnig -> this.sampleRepository.findByMonnigNumber(monnig).setLoan(null));
         this.loanService.delete(loanId); // delete the loan
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
+    }
+    @GetMapping("/view/all/archived")
+    public Result findAllArchivedLoans(){
+        List<Loan> loans = this.loanService.findAll(); // get all the loans first
+        List<Loan> archivedLoans = new ArrayList<>();
+        for(Loan loan : loans) {
+            if(loan.isArchived()){
+                archivedLoans.add(loan);
+            }
+        }
+        List<LoanDto> loanDtoList = archivedLoans.stream()
+                .map(this.loanToLoanDtoConverter::convert)
+                .toList();
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", loanDtoList);
     }
 }

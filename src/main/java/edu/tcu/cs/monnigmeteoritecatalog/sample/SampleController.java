@@ -49,7 +49,7 @@ public class SampleController {
         SampleDto sampleDto = this.sampleToSampleDtoConverter.convert(foundSample);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", sampleDto);
     }
-    @GetMapping("/view/related/{sampleId}")
+    @GetMapping("/related/{sampleId}")
     public Result findRelatedSamplesById(@PathVariable String sampleId) {
         Sample sample = this.sampleService.findById(sampleId); // main sample we are looking for relations
         String majorMonnig = sample.getMonnig_number().substring(0, sample.getMonnig_number().indexOf('.')); // this should reformat the M123.1 -> M123
@@ -59,7 +59,7 @@ public class SampleController {
                 .toList();
         return new Result(true, StatusCode.SUCCESS, "Find related samples success", foundSampleDtos);
     }
-    @GetMapping("/all")
+    @GetMapping("/view/all")
     public Result findAllSamples() {
         List<Sample> foundSamples = this.sampleService.findAll();
         List<SampleDto> sampleDtos = foundSamples.stream()
