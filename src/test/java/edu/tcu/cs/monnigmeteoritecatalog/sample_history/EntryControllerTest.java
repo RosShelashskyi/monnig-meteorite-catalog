@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class EntryControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -105,7 +105,7 @@ public class EntryControllerTest {
     @Test
     void testDeleteEntrySuccess() throws Exception {
        doNothing().when(this.entryService).delete("0002");
-        this.mockMvc.perform(delete("/api/history/0002").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(delete("/api/history/delete/0002").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Delete Success"))
@@ -114,7 +114,7 @@ public class EntryControllerTest {
     @Test
     void testDeleteEntryErrorWithNonExistentId() throws Exception {
         doThrow(new ObjectNotFoundException("entry","0002")).when(this.entryService).delete("0002");
-        this.mockMvc.perform(delete("/api/history/0002").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(delete("/api/history/delete/0002").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find entry with Id 0002"))

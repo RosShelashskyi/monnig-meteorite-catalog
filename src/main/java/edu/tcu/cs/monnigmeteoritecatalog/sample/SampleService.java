@@ -1,5 +1,6 @@
 package edu.tcu.cs.monnigmeteoritecatalog.sample;
 
+import edu.tcu.cs.monnigmeteoritecatalog.loan.Loan;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryService;
@@ -81,10 +82,13 @@ public class SampleService {
     public void delete(String sampleId){
         Sample sampleToBeDeleted = this.sampleRepository.findById(sampleId)
                 .orElseThrow(() -> new ObjectNotFoundException("sample", sampleId));
-        List<Entry> history = sampleToBeDeleted.getSample_history();
-        sampleToBeDeleted.removeHistoryEntry();
-        history.forEach(entry -> this.entryService.delete(entry.getEntry_id()));
+        if(sampleToBeDeleted.getLoan() != null) {
+            // remove the sample from the loan
+            sampleToBeDeleted.getLoan().removeSampleFromLoan(sampleToBeDeleted.getMonnig_number());
+            sampleToBeDeleted.setLoan(null);
+        }
+        // remove sample history
+        sampleToBeDeleted.removeHistory();
         this.sampleRepository.deleteById(sampleId);
     }
-
 }

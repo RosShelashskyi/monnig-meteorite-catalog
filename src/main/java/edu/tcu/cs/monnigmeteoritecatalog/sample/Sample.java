@@ -41,13 +41,12 @@ public class Sample implements Serializable {
     private List<File> images;
     private String additional_class_info;
 
+
+    @ManyToOne
+    private Loan loan;
     // Hold the sample history for this sample
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "sample")
     private List<Entry> sample_history = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private List<Loan> loans = new ArrayList<>();
 
     public Sample() {
     }
@@ -228,6 +227,14 @@ public class Sample implements Serializable {
         this.images = images;
     }
 
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+    }
+
     public String getAdditional_class_info() {
         return additional_class_info;
     }
@@ -243,28 +250,9 @@ public class Sample implements Serializable {
         historyEntry.setSample(this);
         this.sample_history.add(historyEntry);
     }
-    public void removeHistoryEntry() {
+    public void removeHistory() {
         this.sample_history.forEach(entry -> entry.setSample(null));
         this.sample_history = new ArrayList<>();
     }
 
-    public Integer getSampleHistorySize() {
-        return this.sample_history.size();
-    }
-
-    public void setSample_history(List<Entry> sample_history) {
-        this.sample_history = sample_history;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
-    public void addLoan(Loan loan){
-        this.loans.add(loan);
-    }
 }

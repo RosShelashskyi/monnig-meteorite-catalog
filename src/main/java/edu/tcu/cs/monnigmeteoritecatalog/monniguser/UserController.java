@@ -24,7 +24,7 @@ public class UserController {
         this.curatorToCuratorDtoConverter = curatorToCuratorDtoConverter;
         this.curatorDtoToCuratorConverter = curatorDtoToCuratorConverter;
     }
-    @GetMapping
+    @GetMapping("/all")
     public Result findAllUsers() {
         List<MonnigUser> foundMonnigUsers = this.userService.findAll();
 

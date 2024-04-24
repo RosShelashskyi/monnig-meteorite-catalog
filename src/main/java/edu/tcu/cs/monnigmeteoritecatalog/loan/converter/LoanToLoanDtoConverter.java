@@ -14,7 +14,7 @@ public class LoanToLoanDtoConverter implements Converter<Loan, LoanDto> {
 
     @Override
     public LoanDto convert(Loan source){
-        LoanDto loanDto = new LoanDto(source.getLoan_ID(),
+        return new LoanDto(source.getLoan_ID(),
                                         source.getSamples_on_loan(),
                                         source.getLoanee_name(),
                                         source.getLoanee_email(),
@@ -22,9 +22,8 @@ public class LoanToLoanDtoConverter implements Converter<Loan, LoanDto> {
                                         source.getLoanee_address(),
                                         source.getLoan_start_date(),
                                         source.getLoan_due_date(),
-                                        source.getLoan_notes()
-                                        );
-        return loanDto;
+                                        source.getLoan_notes(),
+                                        source.isArchived());
     }
 
 }

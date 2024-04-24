@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class LoanControllerTest {
 
     @Autowired
@@ -78,7 +78,6 @@ public class LoanControllerTest {
         l1.setLoan_start_date("2024-04-01 10:00:00");
         l1.setLoan_due_date("2024-04-15 10:00:00");
         l1.setLoan_notes("Fragile meteorite, handle with care.");
-        l1.setSamples_on_loan(Arrays.asList(s1));
 
         Loan l2 = new Loan();
         l2.setLoan_ID("0002");
@@ -89,7 +88,6 @@ public class LoanControllerTest {
         l2.setLoan_start_date("2024-03-20 09:30:00");
         l2.setLoan_due_date("2024-04-10 09:30:00");
         l2.setLoan_notes("Rare meteorite, research project.");
-        l2.setSamples_on_loan(Arrays.asList(s2));
 
         this.loans = new ArrayList<>();
         this.loans.add(l1);
@@ -105,7 +103,7 @@ public class LoanControllerTest {
         given(this.loanService.findById("0001")).willReturn(this.loans.getFirst());
 
         //when and then
-        this.mockMvc.perform(get("/api/loan/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan/view/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find One Success"))
@@ -124,7 +122,7 @@ public class LoanControllerTest {
         //given
         given(this.loanService.findById("0001")).willThrow(new ObjectNotFoundException("loan", "0001"));
         //when and then
-        this.mockMvc.perform(get("/api/loan/0001").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan/view/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find loan with Id 0001"))
@@ -136,7 +134,7 @@ public class LoanControllerTest {
         //given
         given(this.loanService.findAll()).willReturn(this.loans);
         //when and then
-        this.mockMvc.perform(get("/api/loan").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/loan/all").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find All Success"))
@@ -170,15 +168,14 @@ public class LoanControllerTest {
         s2.setDate_found_year("1952");
         s2.setSample_weight_g((float)453.1);
 
-        LoanDto loanDto = new LoanDto(null,
-                Arrays.asList(s1, s2),
+        LoanDto loanDto = new LoanDto(null, null,
                 "John Doe",
                 "johndoe@example.com",
                 "Meteorite Research Institute",
                 "123 Meteorite Street, Cityville, USA",
                 "2024-04-01 10:00:00",
                 "2024-04-15 10:00:00",
-                "Fragile meteorite, handle with care.");
+                "Fragile meteorite, handle with care.", false);
         String json = this.objectMapper.writeValueAsString(loanDto);
 
         Loan l1 = new Loan();
@@ -194,7 +191,7 @@ public class LoanControllerTest {
         given(this.loanService.save(Mockito.any(Loan.class))).willReturn(l1);
 
         //when and then
-        this.mockMvc.perform(post("/api/loan").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(post("/api/loan/create").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Add Success"))
@@ -233,14 +230,14 @@ public class LoanControllerTest {
         s2.setSample_weight_g((float)453.1);
 
         LoanDto loanDto = new LoanDto("0001",
-                Arrays.asList(s1, s2),
+                null,
                 "John Doe",
                 "johndoe@example.com",
                 "Meteorite Research Institute",
                 "123 Meteorite Street, Cityville, USA",
                 "2024-04-01 10:00:00",
                 "2024-04-15 10:00:00",
-                "Fragile meteorite, handle with care.");
+                "Fragile meteorite, handle with care.", false);
         String json = this.objectMapper.writeValueAsString(loanDto);
 
         Loan l2 = new Loan();
@@ -256,7 +253,7 @@ public class LoanControllerTest {
         given(this.loanService.update(eq("0001"), Mockito.any(Loan.class))).willReturn(l2);
 
         //when and then
-        this.mockMvc.perform(put("/api/loan/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/loan//update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Update Success"))
@@ -268,7 +265,8 @@ public class LoanControllerTest {
                 .andExpect(jsonPath("$.data.loanee_address").value(l2.getLoanee_address()))
                 .andExpect(jsonPath("$.data.loan_start_date").value(l2.getLoan_start_date()))
                 .andExpect(jsonPath("$.data.loan_due_date").value(l2.getLoan_due_date()))
-                .andExpect(jsonPath("$.data.loan_notes").value(l2.getLoan_notes()));
+                .andExpect(jsonPath("$.data.loan_notes").value(l2.getLoan_notes()))
+                .andExpect(jsonPath("$.data.isArchived").value(l2.isArchived()));
     }
 
     @Test
@@ -295,19 +293,19 @@ public class LoanControllerTest {
         s2.setSample_weight_g((float)453.1);
 
         LoanDto loanDto = new LoanDto("0001",
-                Arrays.asList(s1, s2),
+                null,
                 "John Doe",
                 "johndoe@example.com",
                 "Meteorite Research Institute",
                 "123 Meteorite Street, Cityville, USA",
                 "2024-04-01 10:00:00",
                 "2024-04-15 10:00:00",
-                "Fragile meteorite, handle with care.");
+                "Fragile meteorite, handle with care.", false);
         String json = this.objectMapper.writeValueAsString(loanDto);
 
         given(this.loanService.update(eq("0001") ,Mockito.any(Loan.class))).willThrow(new ObjectNotFoundException("loan", "0001"));
 
-        this.mockMvc.perform(put("/api/loan/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/loan/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find loan with Id 0001"))
