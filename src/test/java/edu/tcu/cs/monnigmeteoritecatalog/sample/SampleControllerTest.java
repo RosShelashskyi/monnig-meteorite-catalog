@@ -108,7 +108,7 @@ public class SampleControllerTest {
         // Given
         given(this.sampleService.findAll()).willReturn(this.samples);
         // When and then
-        this.mockMvc.perform(get("/api/samples/all").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/samples/view/all").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find All Success"))
