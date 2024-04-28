@@ -89,6 +89,16 @@ public class LoanControllerTest {
         l2.setLoan_due_date("2024-04-10 09:30:00");
         l2.setLoan_notes("Rare meteorite, research project.");
 
+        Loan l3 = new Loan();
+        l3.setLoan_ID("0003");
+        l3.setLoanee_name("Carson Freeman");
+        l3.setLoanee_email("janesmith@example.com");
+        l3.setLoanee_institution("Space Exploration Society");
+        l3.setLoanee_address("456 Galaxy Avenue, Star City, Canada");
+        l3.setLoan_start_date("2024-03-20 09:30:00");
+        l3.setLoan_due_date("2024-04-10 09:30:00");
+        l3.setLoan_notes("Rare meteorite, research project.");
+
         this.loans = new ArrayList<>();
         this.loans.add(l1);
         this.loans.add(l2);
@@ -253,7 +263,7 @@ public class LoanControllerTest {
         given(this.loanService.update(eq("0001"), Mockito.any(Loan.class))).willReturn(l2);
 
         //when and then
-        this.mockMvc.perform(put("/api/loan//update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/loan/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Update Success"))
@@ -310,5 +320,95 @@ public class LoanControllerTest {
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find loan with Id 0001"))
                 .andExpect(jsonPath("$.data").isEmpty());
+    }
+    @Test
+    void testArchiveLoanSuccess() throws Exception {
+        // Given
+        LoanDto loanDto = new LoanDto("0001",
+                null,
+                "John Doe",
+                "johndoe@example.com",
+                "Meteorite Research Institute",
+                "123 Meteorite Street, Cityville, USA",
+                "2024-04-01 10:00:00",
+                "2024-04-15 10:00:00",
+                "Fragile meteorite, handle with care.", false);
+        String json = this.objectMapper.writeValueAsString(loanDto);
+
+        Loan l2 = new Loan();
+        l2.setLoan_ID("0001");
+        l2.setLoanee_name("John Doe");
+        l2.setLoanee_email("johndoe@example.com");
+        l2.setLoanee_institution("Meteorite Research Institute");
+        l2.setLoanee_address("123 Meteorite Street, Cityville, USA");
+        l2.setLoan_start_date("2024-04-01 10:00:00");
+        l2.setLoan_due_date("2024-04-15 10:00:00");
+        l2.setLoan_notes("Fragile meteorite, handle with care.");
+        l2.setArchived(true);
+
+        given(this.loanService.update(eq("0001"), Mockito.any(Loan.class))).willReturn(l2);
+
+        //when and then
+        this.mockMvc.perform(put("/api/loan/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Update Success"))
+                .andExpect(jsonPath("$.data.id").value("0001"))
+                .andExpect(jsonPath("$.data.samples_on_loan").value(l2.getSamples_on_loan()))
+                .andExpect(jsonPath("$.data.loanee_name").value(l2.getLoanee_name()))
+                .andExpect(jsonPath("$.data.loanee_email").value(l2.getLoanee_email()))
+                .andExpect(jsonPath("$.data.loanee_institution").value(l2.getLoanee_institution()))
+                .andExpect(jsonPath("$.data.loanee_address").value(l2.getLoanee_address()))
+                .andExpect(jsonPath("$.data.loan_start_date").value(l2.getLoan_start_date()))
+                .andExpect(jsonPath("$.data.loan_due_date").value(l2.getLoan_due_date()))
+                .andExpect(jsonPath("$.data.loan_notes").value(l2.getLoan_notes()))
+                .andExpect(jsonPath("$.data.isArchived").value(true));
+
+
+    }
+    @Test
+    void testUnArchiveLoanSuccess() throws Exception {
+        // Given
+        LoanDto loanDto = new LoanDto("0001",
+                null,
+                "John Doe",
+                "johndoe@example.com",
+                "Meteorite Research Institute",
+                "123 Meteorite Street, Cityville, USA",
+                "2024-04-01 10:00:00",
+                "2024-04-15 10:00:00",
+                "Fragile meteorite, handle with care.", false);
+        String json = this.objectMapper.writeValueAsString(loanDto);
+
+        Loan l2 = new Loan();
+        l2.setLoan_ID("0001");
+        l2.setLoanee_name("John Doe");
+        l2.setLoanee_email("johndoe@example.com");
+        l2.setLoanee_institution("Meteorite Research Institute");
+        l2.setLoanee_address("123 Meteorite Street, Cityville, USA");
+        l2.setLoan_start_date("2024-04-01 10:00:00");
+        l2.setLoan_due_date("2024-04-15 10:00:00");
+        l2.setLoan_notes("Fragile meteorite, handle with care.");
+        l2.setArchived(false);
+
+        given(this.loanService.update(eq("0001"), Mockito.any(Loan.class))).willReturn(l2);
+
+        //when and then
+        this.mockMvc.perform(put("/api/loan/update/0001").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Update Success"))
+                .andExpect(jsonPath("$.data.id").value("0001"))
+                .andExpect(jsonPath("$.data.samples_on_loan").value(l2.getSamples_on_loan()))
+                .andExpect(jsonPath("$.data.loanee_name").value(l2.getLoanee_name()))
+                .andExpect(jsonPath("$.data.loanee_email").value(l2.getLoanee_email()))
+                .andExpect(jsonPath("$.data.loanee_institution").value(l2.getLoanee_institution()))
+                .andExpect(jsonPath("$.data.loanee_address").value(l2.getLoanee_address()))
+                .andExpect(jsonPath("$.data.loan_start_date").value(l2.getLoan_start_date()))
+                .andExpect(jsonPath("$.data.loan_due_date").value(l2.getLoan_due_date()))
+                .andExpect(jsonPath("$.data.loan_notes").value(l2.getLoan_notes()))
+                .andExpect(jsonPath("$.data.isArchived").value(false));
+
+
     }
 }
