@@ -1,0 +1,7 @@
+edu/tcu/cs/monnigmeteoritecatalog/MonnigMeteoriteCatalogApplicationTests.class
+edu/tcu/cs/monnigmeteoritecatalog/sample_history/EntryControllerTest.class
+edu/tcu/cs/monnigmeteoritecatalog/loan/LoanServiceTest.class
+edu/tcu/cs/monnigmeteoritecatalog/sample_history/EntryServiceTest.class
+edu/tcu/cs/monnigmeteoritecatalog/sample/SampleServiceTest.class
+edu/tcu/cs/monnigmeteoritecatalog/loan/LoanControllerTest.class
+edu/tcu/cs/monnigmeteoritecatalog/sample/SampleControllerTest.class
