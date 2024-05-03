@@ -76,7 +76,7 @@ public class SampleControllerTest {
     @Test
     void testSampleFindByIdSuccess() throws Exception {
         // Given
-        given(this.sampleService.findById("0001")).willReturn(this.samples.getFirst());
+        given(this.sampleService.findById("0001")).willReturn(this.samples.get(0));
         // When and then
         this.mockMvc.perform(get("/api/samples/view/0001").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))

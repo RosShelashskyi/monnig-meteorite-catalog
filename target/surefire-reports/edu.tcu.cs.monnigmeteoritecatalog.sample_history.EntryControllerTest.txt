@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryControllerTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.284 s -- in edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryControllerTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.260 s -- in edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryControllerTest

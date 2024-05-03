@@ -9,6 +9,3 @@ spring:
 api:
   endpoint:
     base-url: /api
-
-server:
-  port: 80

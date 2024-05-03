@@ -110,7 +110,7 @@ public class LoanControllerTest {
     @Test
     void testLoanFindByIdSuccess() throws Exception{
         //given
-        given(this.loanService.findById("0001")).willReturn(this.loans.getFirst());
+        given(this.loanService.findById("0001")).willReturn(this.loans.get(0));
 
         //when and then
         this.mockMvc.perform(get("/api/loan/view/0001").accept(MediaType.APPLICATION_JSON))
