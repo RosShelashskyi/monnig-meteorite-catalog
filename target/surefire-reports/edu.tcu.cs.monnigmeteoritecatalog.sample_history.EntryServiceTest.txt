@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryServiceTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryServiceTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in edu.tcu.cs.monnigmeteoritecatalog.sample_history.EntryServiceTest

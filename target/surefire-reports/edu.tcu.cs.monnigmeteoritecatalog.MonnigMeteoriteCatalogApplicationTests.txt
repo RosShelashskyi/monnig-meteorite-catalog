@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: edu.tcu.cs.monnigmeteoritecatalog.MonnigMeteoriteCatalogApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.373 s -- in edu.tcu.cs.monnigmeteoritecatalog.MonnigMeteoriteCatalogApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.480 s -- in edu.tcu.cs.monnigmeteoritecatalog.MonnigMeteoriteCatalogApplicationTests
