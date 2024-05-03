@@ -20,7 +20,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
       - name: Set up JDK 22
-        uses: actions/setup-java@v4 # changed this to v4
+        uses: actions/setup-java@v3 # changed this to v4
         with:
           java-version: '22'
           distribution: 'temurin'
