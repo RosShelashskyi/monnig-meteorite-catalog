@@ -5,4 +5,4 @@ api:
   endpoint:
     base-url: /api
 server:
-  port: 80
+  port: 8080
