@@ -12,11 +12,13 @@ import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.Entry;
 import edu.tcu.cs.monnigmeteoritecatalog.samplehistory.EntryRepository;
 import edu.tcu.cs.monnigmeteoritecatalog.utils.IdWorker;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
+@Profile("dev")
 public class DBDataInitializer implements CommandLineRunner {
 
     private final SampleRepository sampleRepository;

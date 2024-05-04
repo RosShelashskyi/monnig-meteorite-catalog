@@ -1,11 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:monnig
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  jpa:
-    show-sql: true
+  profiles:
+    active: dev
 api:
   endpoint:
     base-url: /api
