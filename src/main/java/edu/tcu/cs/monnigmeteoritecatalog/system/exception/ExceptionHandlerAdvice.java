@@ -3,6 +3,7 @@ package edu.tcu.cs.monnigmeteoritecatalog.system.exception;
 import edu.tcu.cs.monnigmeteoritecatalog.system.Result;
 import edu.tcu.cs.monnigmeteoritecatalog.system.StatusCode;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,11 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     Result handleAuthenticationException(Exception ex) {
         return new Result(false, StatusCode.UNAUTHORIZED, "username or password is incorrect." ,ex.getMessage());
+    }
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    Result handleInsufficientAuthenticationException(Exception InsufficientAuthenticationException) {
+        return new Result(false, StatusCode.UNAUTHORIZED, "Login Credentials are missing." , InsufficientAuthenticationException.getMessage());
     }
     @ExceptionHandler(InvalidBearerTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
