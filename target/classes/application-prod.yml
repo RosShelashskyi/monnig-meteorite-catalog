@@ -6,9 +6,9 @@ spring:
           property-sources[0]:
             endpoint: ${AZURE_KEY_VAULT_ENDPOINT} # environment variable
   datasource:
-    url: ${datasource-url} # URL of Postgres in Azure
-    username: ${datasource-username} # admin username i post
-    password: ${datasource-password} # password of admin in post
+    url: ${datasource-url} # secret from Azure Key Vault
+    username: ${datasource-username} # secret from Azure Key Vault
+    password: ${datasource-password} # secret from Azure Key Vault
   jpa:
     hibernate:
-      ddl-auto: none # Turn off DDL
+      ddl-auto: none # Turn off the DDL auto generation.

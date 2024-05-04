@@ -109,13 +109,6 @@ public class SampleController {
         EntryDto savedEntryDto = this.entryToEntryDtoConverter.convert(savedEntry);
         return new Result(true, StatusCode.SUCCESS, "Entry Created", savedEntryDto);
     }
-//    @PostMapping("/subsample/{sampleId}")
-//    public Result addSubsample(@PathVariable String sampleId, @Valid @RequestBody SampleDto sampleDto){
-//        Sample sample = this.sampleDtoToSampleConverter.convert(sampleDto);
-//        Sample newSubSample = this.sampleService.subsample(sampleId, sample);
-//        SampleDto newSubSampleDto = this.sampleToSampleDtoConverter.convert(newSubSample);
-//        return new Result(true, StatusCode.SUCCESS, "Subsample Created", newSubSampleDto);
-//    }
 
 
 }
