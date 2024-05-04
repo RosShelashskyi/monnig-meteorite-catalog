@@ -6,7 +6,7 @@ spring:
           property-sources[0]:
             endpoint: ${AZURE_KEY_VAULT_ENDPOINT} # environment variable
   datasource:
-    url: ${datasource-url} # URL of PostGres in Azure
+    url: ${datasource-url} # URL of Postgres in Azure
     username: ${datasource-username} # admin username i post
     password: ${datasource-password} # password of admin in post
   jpa:
