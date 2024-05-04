@@ -55,24 +55,9 @@ public class SampleService {
                     oldSample.setMonnig_number(update.getMonnig_number());
                     oldSample.setSample_class(update.getSample_class());
                     oldSample.setSample_group(update.getSample_group());
-                    oldSample.setClan(update.getClan());
                     oldSample.setCountry(update.getCountry());
-                    oldSample.setLocation(update.getLocation());
-                    oldSample.setFound_info(update.getFound_info());
-                    oldSample.setType(update.getType());
-                    oldSample.setTotal_known_weight_num(update.getTotal_known_weight_num());
-                    oldSample.setTotal_know_weight_units(update.getTotal_know_weight_units());
                     oldSample.setSample_weight_g(update.getSample_weight_g());
                     oldSample.setDate_found_year(update.getDate_found_year());
-                    oldSample.setDate_found_month(update.getDate_found_month());
-                    oldSample.setDate_found_day(update.getDate_found_day());
-                    oldSample.setDate_found_hour(update.getDate_found_hour());
-                    oldSample.setIs_educational(update.isIs_educational());
-                    oldSample.setIs_repository(update.isIs_repository());
-                    oldSample.setSample_format(update.getSample_format());
-                    oldSample.setExternal_resources(update.getExternal_resources());
-                    oldSample.setImages(update.getImages());
-                    oldSample.setAdditional_class_info(update.getAdditional_class_info());
                     //not including history in this since history is meant to track updates
                     //and it doesn't make sense to update history with this api call
                     return this.sampleRepository.save(oldSample);

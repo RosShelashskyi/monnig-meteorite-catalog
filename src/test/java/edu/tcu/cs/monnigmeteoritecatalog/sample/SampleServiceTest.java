@@ -94,7 +94,6 @@ class SampleServiceTest {
         assertThat(returnedSample.getMonnig_number()).isEqualTo(s.getMonnig_number());
         assertThat(returnedSample.getCountry()).isEqualTo(s.getCountry());
         assertThat(returnedSample.getSample_class()).isEqualTo(s.getSample_class());
-        assertThat(returnedSample.getClan()).isEqualTo(s.getClan());
         assertThat(returnedSample.getSample_group()).isEqualTo(s.getSample_group());
         assertThat(returnedSample.getDate_found_year()).isEqualTo(s.getDate_found_year());
         assertThat(returnedSample.getSample_weight_g()).isEqualTo(s.getSample_weight_g());
